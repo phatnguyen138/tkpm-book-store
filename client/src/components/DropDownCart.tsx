@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-    AiOutlineShoppingCart,
     AiOutlinePlus,
     AiOutlineMinus,
     AiOutlineClose
@@ -84,28 +83,13 @@ const Item = (props: CartItem) => {
                     </div>
                 </div>
             </div>
-            {/* <div className="flex items-center">
-                <span className="mr-2 text-sky-600 font-semibold ">
-                    {getDiscountPrice(props.product?.price, props.product?.discountRate)*props.quantity}đ
-                </span>
-                <BsTrashFill 
-                    onClick={() => {
-                        if(authUser.name !== "") {
-                            dispatch(deleteCartItemFromDB({itemId: props.id}))
-                        } else {
-                            dispatch(productRemoved(props.id))}
-                        }
-                    }
-                    className="text-sm font-semibold text-red-600 cursor-pointer"
-                />
-            </div> */}
         </div>
     )
 }
 
 const Cart = ({ cartItems, closeCart }: cartProps) => {
     return (
-        <div className="absolute z-50 bg-slate-50 px-2 py-2 border border-slate-300 top-[40px] right-0 w-[320px]">
+        <div className="absolute z-50 bg-slate-50 px-2 py-2 border border-slate-300 top-[40px] right-0 w-[320px] mt-5">
             <h4 className="relative text-center text-lg font-semibold text-sky-600">
                 <span>Giỏ hàng của tôi</span>
                 <AiOutlineClose
@@ -137,7 +121,6 @@ const DropDownCart = () => {
     return (
         <>
             <div>
-                {/* // className='relative rounded-full px-1 py-1 bg-white border border-white hover:bg-slate-100 hover:border-slate-200' */}
                 <button className="relative mr-6 text-gray-600 hover:text-gray-800 focus:outline-none">
                     <FaShoppingCart className="w-6 h-6"
                         onClick={() => { setOpen(prev => !prev) }}

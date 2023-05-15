@@ -53,39 +53,10 @@ const HeaderBar = () => {
                     </button>
                 </div>
             </div>
-            <div className="relative">
-
-                <DropDownCart />
-                {/* <button className="relative mr-6 text-gray-600 hover:text-gray-800 focus:outline-none" onClick={handleCartClick}>
-                    <FaShoppingCart className="w-6 h-6" />
-                    {cartItems.length > 0 ? (
-                        <div className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">
-                            {cartItems.length}
-                        </div>) :
-                        <div></div>
-                    }
-                </button>
-                {isCartOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-50">
-                        <ul>
-                            {cartItems.map((item) => (
-                                <li key={item.id} className="px-4 py-2">
-                                    <span>{item.name}</span>
-                                    <span className="ml-2">${item.price}</span>
-                                </li>
-                            ))}
-                            {cartItems.length === 0 && (
-                                <li className="px-4 py-2">Your cart is empty.</li>
-                            )}
-                        </ul>
-                        <NavLink to={'/cart'}>
-                            <div className="block w-full px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100">
-                                Access the cart
-                            </div>
-                        </NavLink>
-                    </div>
-                )} */}
-                <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={handleProfileClick}>
+            <div className="flex items-center">
+                <div className='mr-10'>
+                    <DropDownCart /></div>
+                <button className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10" onClick={handleProfileClick}>
                     <FaUser className="w-6 h-6" />
                 </button>
             </div>
