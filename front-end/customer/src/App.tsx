@@ -1,7 +1,7 @@
 import "./index.css"
 import { Routes, Route } from 'react-router-dom';
 import LoginForm from "./components/LoginForm"
-import RegisterForm from "./components/RegisterForm"; 
+import RegisterForm from "./components/RegisterForm";
 import ProtectedRoute from './components/ProtectedRoute';
 import MainPage from "./pages/MainPage";
 
@@ -10,9 +10,9 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/*" element={<ProtectedRoute isLoggedIn={isLoggedIn} children = {<MainPage/>}/>}/>
-      <Route path="/login" element={<LoginForm/>}/>
-      <Route path="/register" element={<RegisterForm/>}/>
+      <Route path="/*" element={<ProtectedRoute isLoggedIn={isLoggedIn} children={<MainPage />} />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/register" element={<RegisterForm />} />
     </Routes>
   )
 }
