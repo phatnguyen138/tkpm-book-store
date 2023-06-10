@@ -1,0 +1,27 @@
+# Yarn dependencies
+node_modules/
+
+# Built files
+/build
+/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+.prettierrc
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
