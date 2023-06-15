@@ -120,14 +120,14 @@ const DropDownCart = () => {
 
     return (
         <>
-            <div>
-                <button className="relative mr-6 text-gray-600 hover:text-gray-800 focus:outline-none">
+            <div className="mr-5">
+                <button className="relative mr-1 text-gray-600 hover:text-gray-800 focus:outline-none">
                     <FaShoppingCart className="w-6 h-6"
                         onClick={() => { setOpen(prev => !prev) }}
                     />
                 </button>
                 {cart.items.length > 0 &&
-                    <span className="text-center text-xs font-medium text-white bg-red-500 w-[16px] h-[16px] rounded-full absolute -top-[8px] -right-[8px]">
+                    <span className="text-center text-xs font-medium text-white bg-red-500 w-[16px] h-[16px] rounded-full absolute">
                         {cart.items.length}
                     </span>
                 }

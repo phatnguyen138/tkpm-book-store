@@ -49,7 +49,7 @@ function ProductCategories(): JSX.Element {
             </div>
             <div className="grid grid-cols-5 gap-4">
                 {displayedGenres.map((genre) => (
-                    <NavLink key={genre.id} to={`/danh-muc/${genre.description}`}>
+                    <NavLink key={genre.id} to={`/list/${genre.description}`}>
                         <div className="flex flex-col items-center">
                             <img
                                 src={genre.image}

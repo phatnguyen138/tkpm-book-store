@@ -7,7 +7,7 @@ function Banner(): JSX.Element {
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
         <h1 className="text-4xl font-bold text-white">Welcome to My Book Store!</h1>
         <p className="mt-4 text-lg text-white">Find your favorite books and more...</p>
-        <Link to='/list'>
+        <Link to='/list/tat-ca'>
           <button className="mt-8 bg-white text-black py-3 px-6 rounded-full font-bold hover:bg-gray-200">Shop Now</button>
         </Link>
       </div>
