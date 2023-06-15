@@ -10,24 +10,7 @@ import {products} from "../mockData/Products"
 
 
 const HeaderBar = () => {
-    // const [isCartOpen, setCartOpen] = useState(false);
-    // const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
-    // const addToCart = (item: CartItem) => {
-    //     setCartItems((prevItems) => [...prevItems, item]);
-    // };
-
     const dispatch = useAppDispatch();
-    const handleProfileClick = () => {
-        // const newItems: CartItem = {
-        //     id: 1,
-        //     name: 'Chocolate',
-        //     price: 10
-        // }
-
-        dispatch(addCartItemToDB({products: products}))
-        // addToCart(newItems)
-    }
 
     return (
         <header className="flex items-center justify-between py-4 px-6 bg-white shadow">
@@ -53,9 +36,10 @@ const HeaderBar = () => {
             <div className="flex items-center">
                 <div className='mr-10'>
                     <DropDownCart /></div>
-                <button className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10" onClick={handleProfileClick}>
+                    <NavLink to={"/profile"}>
+                <div className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10">
                     <FaUser className="w-6 h-6" />
-                </button>
+                </div></NavLink>
             </div>
         </header>
     );

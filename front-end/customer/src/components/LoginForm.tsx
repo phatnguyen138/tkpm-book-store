@@ -32,7 +32,7 @@ function LoginForm() : JSX.Element {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen">
+    <div className="flex flex-col items-center h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-10 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-8">Login</h2>
         <div className="mb-4">

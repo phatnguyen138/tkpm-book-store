@@ -1,0 +1,10 @@
+{
+    "id": "1",
+    "name": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "img": "./assets/logo.png",
+    "price": 50000,
+    "quantity": 5,
+    "discountRate": 0,
+    "genres": ["Tiểu thuyết", "Lãng mạn"]
+}

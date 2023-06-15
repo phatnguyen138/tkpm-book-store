@@ -1,0 +1,242 @@
+[
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    },
+    {
+        "id": 1,
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "img": "Icon",
+        "price": 10,
+        "quantity": 5,
+        "discountRate": 0,
+        "genres": ["Tiểu thuyết", "Lãng mạn"]
+    },
+    {
+        "id": 2,
+        "name": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "img": "Icon",
+        "price": 12,
+        "quantity": 7,
+        "discountRate": 0.1,
+        "genres": ["Tiểu thuyết"]
+    },
+    {
+        "id": 3,
+        "name": 1984,
+        "author": "George Orwell",
+        "img": "Icon",
+        "price": 8,
+        "quantity": 3,
+        "discountRate": 0,
+        "genres": ["Khoa học viễn tưởng", "Trinh thám"]
+    }
+]

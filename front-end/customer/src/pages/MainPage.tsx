@@ -3,8 +3,11 @@ import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
 import HomePage from './HomePage';
 import CartPage from './CartPage';
-import {products, onRemoveProductMock} from '../mockData/Products';
 import BookListPage from './BookListPage';
+import ProductDetail from './ProductDetail';
+import Checkout from './Checkout';
+import Profile from './Profile';
+
 
 
 function MainPage() : JSX.Element {
@@ -12,8 +15,11 @@ function MainPage() : JSX.Element {
         <HeaderBar/>
         <Routes>
             <Route path='/' element={<HomePage/>}></Route>
-            <Route path='/cart' element={<CartPage products={products} onPay={() => {}} onRemoveProduct={onRemoveProductMock}/>}></Route>
-            <Route path="/list" element={<BookListPage />} />
+            <Route path='/cart' element={<CartPage/>}></Route>
+            <Route path="/list/:type/:page?" element={<BookListPage />} />
+            <Route path='/product/:id' element={< ProductDetail/>}/>
+            <Route path='/checkout' element={<Checkout/>}/>
+            <Route path='/profile' element={<Profile/>}/>
         </Routes>
         <Footer/>
     </div>
