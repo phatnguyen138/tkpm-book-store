@@ -4,8 +4,7 @@ export type Product = {
     author: string,
     img: string,
     price: number,
-    quantity: number
-    discountRate: number
+    quantity: number,
     genres: string[],
 }
 
@@ -14,8 +13,7 @@ export type NewProduct = {
     author: string,
     img: string,
     price: number,
-    quantity: number
-    discountRate: number
+    quantity: number,
     genres: string[],
 }
 
