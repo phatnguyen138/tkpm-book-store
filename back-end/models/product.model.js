@@ -13,7 +13,7 @@ const findById = async (id) => {
     return product;
 };
 
-const createUser = async (email, password, fullname, address) => {
+const create = async (email, password, fullname, address) => {
     const user = await db.none(
         'INSERT INTO customers (email, password, fullname, address) VALUES ($1, $2, $3, $4)',
         [email, password, fullname, address]
@@ -23,6 +23,6 @@ const createUser = async (email, password, fullname, address) => {
 
 module.exports = {
     findAll,
-    createUser,
+    create,
     findById
 };
