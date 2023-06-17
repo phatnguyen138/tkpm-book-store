@@ -16,6 +16,7 @@ After that, the server will be running on port 3000. You can also access it thro
 
 -   Sign Up: [POST] /user/signup
 -   Sign In: [POST] /user/signin
+-   Authentication: [GET] /user/auth
 
 ### Product
 
