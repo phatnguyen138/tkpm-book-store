@@ -14,8 +14,8 @@ const findByEmail = async (email) => {
 };
 
 const create = async (email, password, fullname, address) => {
-    const user = await db.none(
-        'INSERT INTO customers (email, password, fullname, address) VALUES ($1, $2, $3, $4)',
+    const user = await db.one(
+        'INSERT INTO customers (email, password, fullname, address) VALUES ($1, $2, $3, $4) RETURNING *',
         [email, password, fullname, address]
     );
     return user;

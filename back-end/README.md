@@ -8,17 +8,31 @@ yarn start
 
 After that, the server will be running on port 3000. You can also access it through the browser using the following link: http://localhost:3000.
 
+[API Documentation](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a)
+
 ## Endpoints:
 
 -   Base URL: http://localhost:3000/api/v1
 
-### User
+### Users
 
--   Sign Up: [POST] /user/signup
--   Sign In: [POST] /user/signin
--   Authentication: [GET] /user/auth
+-   Sign Up: [POST] /users/signup
+-   Sign In: [POST] /users/signin
+-   Authentication: [GET] /users/auth
 
-### Product
+### Books
 
--   Get all products: [GET] /product
--   Get product by id: [GET] /product/:id
+-   Get books: [GET] /books
+-   Get book by id: [GET] /books/:id
+-   Delete book: [DELETE] /books/:id
+
+**Genres**
+
+-   Get genres: [GET] /books/genres
+-   Create genre: [POST] /books/genres
+-   Update genre: [PATCH] /books/genres/:id
+-   Delete genre: [DELETE] /books/genres/:id
+
+**Authors**
+
+-   Get authors: [GET] /books/authors

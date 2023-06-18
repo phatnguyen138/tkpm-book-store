@@ -16,9 +16,10 @@ const signUp = async (req, res) => {
             }
         });
     const hashed = await bcrypt.hash(password, saltRounds);
-    await userModel.create(email, hashed, fullname, address);
+    const newUser = await userModel.create(email, hashed, fullname, address);
     return res.status(201).json({
-        success: true
+        success: true,
+        data: newUser
     });
 };
 
