@@ -2,7 +2,7 @@
 
 -- DROP DATABASE IF EXISTS "BookStore";
 
-CREATE DATABASE "BookStore";
+-- CREATE DATABASE "BookStore";
 
 -- Create the tables
 CREATE TABLE genres (

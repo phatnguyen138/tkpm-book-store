@@ -17,7 +17,7 @@ function MainPage() : JSX.Element {
             <Route path='/' element={<HomePage/>}></Route>
             <Route path='/cart' element={<CartPage/>}></Route>
             <Route path="/list/:type/:page?" element={<BookListPage />} />
-            <Route path='/product/:id' element={< ProductDetail/>}/>
+            <Route path='/product/:id' element={<ProductDetail/>}/>
             <Route path='/checkout' element={<Checkout/>}/>
             <Route path='/profile' element={<Profile/>}/>
         </Routes>
