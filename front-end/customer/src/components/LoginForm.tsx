@@ -7,10 +7,6 @@ interface LoginResponse {
   refreshToken: string;
 }
 
-// interface ErrorResponse {
-//   message: string;
-// }
-
 function LoginForm() : JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -12,7 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 // Cors
-app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5000'],
+    credentials: true,
+  };
+app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/v1', router);
