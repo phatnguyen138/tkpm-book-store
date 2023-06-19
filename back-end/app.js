@@ -17,6 +17,7 @@ const corsOptions = {
     credentials: true,
   };
 app.use(cors(corsOptions));
+//Config to front end
 
 // Routes
 app.use('/api/v1', router);
