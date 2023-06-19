@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const logger = require('morgan');
@@ -7,6 +8,9 @@ const cors = require('cors');
 // Json Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Static file
+app.use('/', express.static('uploads'));
 
 // Logger
 app.use(logger('dev'));
@@ -26,11 +30,12 @@ app.use((req, res, next) => {
 
 // Error handler function
 app.use((err, req, res, next) => {
-    const error = process.env.DEV === 'development' ? err : {};
+    const error = err;
     const status = err.status || 500;
 
     // response to client
     return res.status(status).json({
+        success: false,
         error: {
             message: error.message
         }

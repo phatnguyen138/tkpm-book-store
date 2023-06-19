@@ -108,6 +108,87 @@ const getBookById = async (req, res) => {
     });
 };
 
+const createBook = async (req, res, next) => {
+    let { title, price, quantity, discount, genres, authors } = req.body;
+    if (
+        !title ||
+        !req.file ||
+        !price ||
+        !quantity ||
+        !discount ||
+        !genres ||
+        !authors
+    )
+        return res.status(400).json({
+            success: false,
+            error: {
+                message: 'Missing credentials'
+            }
+        });
+
+    // insert book
+    const book = await bookModel.insertBook(
+        title,
+        req.file.filename,
+        price,
+        quantity,
+        discount
+    );
+
+    // check if authors exist
+    array_authors = authors.split(',').map((author) => author.trim());
+    const getAuthors = await bookModel.findAllAuthors();
+    array_authors.forEach(async (author) => {
+        const existAuthor = getAuthors.find(
+            (author_db) => author_db.name === author
+        );
+        if (!existAuthor) {
+            console.log('not found author');
+            const new_author = await bookModel.insertAuthor(author);
+            await bookModel.insertBookAuthor(
+                book.book_id,
+                new_author.author_id
+            );
+        } else {
+            await bookModel.insertBookAuthor(
+                book.book_id,
+                existAuthor.author_id
+            );
+        }
+    });
+
+    // check if genres exist
+    const getGenres = await bookModel.findAllGenres();
+    array_genres = genres.split(',').map((genre) => genre.trim());
+    array_genres.forEach(async (genre) => {
+        const existGenre = getGenres.find(
+            (genre_db) => genre_db.name === genre
+        );
+        if (!existGenre) {
+            console.log('not found genre');
+            const new_genre = await bookModel.insertGenre(genre);
+            await bookModel.insertBookGenre(book.book_id, new_genre.genre_id);
+        } else {
+            await bookModel.insertBookGenre(book.book_id, existGenre.genre_id);
+        }
+    });
+
+    const staticURL = 'http://localhost:3000/';
+    return res.status(201).json({
+        success: true,
+        data: {
+            book_id: book.book_id,
+            title,
+            image: staticURL + req.file.filename,
+            price,
+            quantity,
+            discount,
+            authors,
+            genres
+        }
+    });
+};
+
 const removeBook = async (req, res) => {
     const book_id = req.params.id;
     await bookModel.deleteBook(book_id);
@@ -119,6 +200,7 @@ const removeBook = async (req, res) => {
 module.exports = {
     createGenre,
     createAuthor,
+    createBook,
     getAuthors,
     getBookById,
     getBooks,

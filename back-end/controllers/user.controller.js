@@ -20,7 +20,7 @@ const signUp = async (req, res) => {
     // check if email is already in use
     const user = await userModel.findByEmail(email);
     if (user)
-        return res.status(409).json({
+        return res.status(400).json({
             success: false,
             error: {
                 message: 'Email is already in use'
@@ -57,6 +57,7 @@ const signIn = async (req, res, next) => {
 };
 
 const auth = (req, res) => {
+    console.log(req.customer_id);
     return res.status(200).json({
         success: true,
         message: 'Authenticate successfully'

@@ -1,9 +1,14 @@
+const multer = require('multer');
+const multerConfig = require('../configs/multer');
 const bookRoute = require('express').Router();
 const bookController = require('../controllers/book.controller');
 const verifyToken = require('../middlewares/auth');
 
+const upload = multer(multerConfig);
+
 bookRoute
     .get('/', bookController.getBooks)
+    .post('/', upload.single('image'), bookController.createBook)
 
     .get('/genres', bookController.getGenres)
     .post('/genres', bookController.createGenre)
@@ -16,7 +21,6 @@ bookRoute
     .delete('/authors/:id', bookController.removeAuthor)
 
     .get('/:id', verifyToken, bookController.getBookById)
-    // .post('/', bookController.signin)
     // .put('/', bookController.signin)
     .delete('/:id', bookController.removeBook);
 
