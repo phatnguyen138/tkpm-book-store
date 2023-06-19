@@ -38,4 +38,4 @@ After that, the server will be running on port 3000. You can also access it thro
 -   Update author: [PATCH] /books/authors/:id
 -   Delete author: [DELETE] /books/authors/:id
 
-See details in here: ([API Documentation](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a))
+See the API documentation for more details [here](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a).
