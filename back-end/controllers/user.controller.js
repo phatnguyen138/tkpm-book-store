@@ -7,14 +7,27 @@ const saltRounds = 10;
 const signUp = async (req, res) => {
     const { email, password, fullname, address } = req.body;
 
-    // check email is already in use
+    // check if fields exist
+    if (!email || !password || !fullname || !address) {
+        return res.status(400).json({
+            success: false,
+            error: {
+                message: 'Missing credentials'
+            }
+        });
+    }
+
+    // check if email is already in use
     const user = await userModel.findByEmail(email);
     if (user)
         return res.status(409).json({
+            success: false,
             error: {
                 message: 'Email is already in use'
             }
         });
+
+    // hash password
     const hashed = await bcrypt.hash(password, saltRounds);
     const newUser = await userModel.create(email, hashed, fullname, address);
     return res.status(201).json({
@@ -29,6 +42,7 @@ const signIn = async (req, res, next) => {
     const result = await bcrypt.compare(password, user.password);
     if (result === false)
         return res.status(401).json({
+            success: false,
             error: {
                 message: 'Incorrect password'
             }
@@ -37,7 +51,8 @@ const signIn = async (req, res, next) => {
     const accessToken = encodeToken(user);
     res.setHeader('Authorization', accessToken);
     return res.status(200).json({
-        success: true
+        success: true,
+        accessToken
     });
 };
 

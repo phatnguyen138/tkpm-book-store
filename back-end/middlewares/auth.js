@@ -14,7 +14,6 @@ const verifyToken = (req, res, next) => {
 
     try {
         const tokenDecoded = decodeToken(token);
-        console.log('tokenDecoded', tokenDecoded);
         next();
     } catch (error) {
         return res.status(403).json({

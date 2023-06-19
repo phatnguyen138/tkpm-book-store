@@ -47,17 +47,47 @@ const getAuthors = async (req, res) => {
     });
 };
 
+const createAuthor = async (req, res) => {
+    const author_name = req.body.name;
+    const author = await bookModel.insertAuthor(author_name);
+    return res.status(201).json({
+        success: true,
+        data: author
+    });
+};
+
+const updateAuthor = async (req, res) => {
+    const author_name = req.body.name;
+    const author_id = req.params.id;
+    const author = await bookModel.updateAuthorById(author_name, author_id);
+    return res.status(200).json({
+        success: true,
+        data: author
+    });
+};
+
+const removeAuthor = async (req, res) => {
+    const author_id = req.params.id;
+    await bookModel.deleteAuthor(author_id);
+    return res.status(200).json({
+        success: true
+    });
+};
+
 /* Book Controller */
 
 const getBooks = async (req, res) => {
-    const { author, genre } = req.query;
-    let books = await bookModel.findAllBooks();
-    if (author && genre) {
+    const { title, author, genre, limit, offset } = req.query;
+    let books = await bookModel.findAllBooks(limit, offset);
+    if (author && genre && title) {
         books = books.filter((book) => {
             const author_name = book.authors.includes(author);
             const genre_name = book.genres.includes(genre);
-            return author_name && genre_name;
+            const book_title = book.title.includes(title);
+            return author_name && genre_name && book_title;
         });
+    } else if (title) {
+        books = books.filter((book) => book.title.includes(title));
     } else if (author) {
         books = books.filter((book) => book.authors.includes(author));
     } else if (genre) {
@@ -71,7 +101,6 @@ const getBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
     const book_id = req.params.id;
-    console.log('book id', book_id);
     const book = await bookModel.findBookById(book_id);
     return res.status(200).json({
         success: true,
@@ -89,11 +118,14 @@ const removeBook = async (req, res) => {
 
 module.exports = {
     createGenre,
+    createAuthor,
     getAuthors,
     getBookById,
     getBooks,
     getGenres,
     removeBook,
     removeGenre,
-    updateGenre
+    removeAuthor,
+    updateGenre,
+    updateAuthor
 };
