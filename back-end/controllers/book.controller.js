@@ -127,10 +127,11 @@ const createBook = async (req, res, next) => {
     )
         return next(new Error(400, 'Missing fields'));
 
+    const staticURL = `http://localhost:3000/images/${req.file.filename}`;
     // insert book
     const book = await bookModel.insertBook(
         title,
-        req.file.filename,
+        staticURL,
         price,
         quantity,
         discount
@@ -169,7 +170,6 @@ const createBook = async (req, res, next) => {
         }
     });
 
-    const staticURL = `http://localhost:3000/images/${req.file.filename}`;
     return res.status(201).json({
         success: true,
         data: {

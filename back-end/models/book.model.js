@@ -71,8 +71,20 @@ const findAllBooks = async (limit = 'ALL', offset = 0) => {
 };
 
 const findBookById = async (id) => {
+    // const book = await db.oneOrNone(
+    //     'SELECT * FROM books WHERE book_id = $1',
+    //     id
+    // );
     const book = await db.oneOrNone(
-        'SELECT * FROM books WHERE book_id = $1',
+        `SELECT b.book_id, b.title, b.image, b.price, b.quantity, b.discount, STRING_AGG(DISTINCT a.name, ', ') AS authors, STRING_AGG(DISTINCT g.name, ', ') AS genres
+        FROM books AS b LEFT JOIN books_authors AS ba ON b.book_id = ba.book_id 
+                        LEFT JOIN authors AS a ON ba.author_id = a.author_id 
+                        LEFT JOIN books_genres AS bg ON b.book_id = bg.book_id
+                        LEFT JOIN genres AS g ON bg.genre_id = g.genre_id
+        WHERE b.book_id IN (SELECT b.book_id FROM books AS b LEFT JOIN books_authors AS ba ON b.book_id = ba.book_id GROUP BY b.book_id)
+          AND b.book_id IN (SELECT b.book_id FROM books AS b LEFT JOIN books_genres AS bg ON b.book_id = bg.book_id GROUP BY b.book_id)
+          AND b.book_id = $1
+        GROUP BY b.book_id, b.title, b.image, b.price`,
         id
     );
     return book;
@@ -115,18 +127,18 @@ const insertBookGenre = async (book_id, genre_id) => {
 };
 
 module.exports = {
-    insertBook,
-    insertBookGenre,
-    insertBookAuthor,
-    deleteBook,
-    insertGenre,
-    insertAuthor,
-    deleteGenre,
     deleteAuthor,
-    updateGenreById,
-    updateAuthorById,
+    deleteBook,
+    deleteGenre,
     findAllAuthors,
     findAllBooks,
     findAllGenres,
-    findBookById
+    findBookById,
+    insertAuthor,
+    insertBook,
+    insertBookAuthor,
+    insertBookGenre,
+    insertGenre,
+    updateAuthorById,
+    updateGenreById
 };
