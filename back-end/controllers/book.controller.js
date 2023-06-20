@@ -226,43 +226,63 @@ const updateBook = async (req, res, next) => {
     }
     console.log('new book after updated', book);
 
-    // delete relation book-author
-    await bookModel.deleteBookAuthor(book.book_id);
     // check if authors exist
-    array_authors = authors.split(',').map((author) => author.trim());
-    const getAuthors = await bookModel.findAllAuthors();
-    array_authors.forEach(async (author) => {
-        const existAuthor = getAuthors.find(
-            (author_db) => author_db.name === author
-        );
-        if (!existAuthor) {
-            const newAuthor = await bookModel.insertAuthor(author);
-            await bookModel.insertBookAuthor(book.book_id, newAuthor.author_id);
-        } else {
-            await bookModel.insertBookAuthor(
-                book.book_id,
-                existAuthor.author_id
+    if (authors) {
+        // delete relation book-author
+        await bookModel.deleteBookAuthor(book.book_id);
+        array_authors = authors.split(',').map((author) => author.trim());
+        const getAuthors = await bookModel.findAllAuthors();
+        array_authors.forEach(async (author) => {
+            const existAuthor = getAuthors.find(
+                (author_db) => author_db.name === author
             );
-        }
-    });
+            if (!existAuthor) {
+                const newAuthor = await bookModel.insertAuthor(author);
+                await bookModel.insertBookAuthor(
+                    book.book_id,
+                    newAuthor.author_id
+                );
+            } else {
+                await bookModel.insertBookAuthor(
+                    book.book_id,
+                    existAuthor.author_id
+                );
+            }
+        });
+    }
 
-    // delete relation book-genre
-    await bookModel.deleteBookGenre(book.book_id);
     // check if genres exist
-    const getGenres = await bookModel.findAllGenres();
-    array_genres = genres.split(',').map((genre) => genre.trim());
-    array_genres.forEach(async (genre) => {
-        const existGenre = getGenres.find(
-            (genre_db) => genre_db.name === genre
-        );
-        if (!existGenre) {
-            const newGenre = await bookModel.insertGenre(genre);
-            await bookModel.insertBookGenre(book.book_id, newGenre.genre_id);
-        } else {
-            await bookModel.insertBookGenre(book.book_id, existGenre.genre_id);
-        }
-    });
-    await bookModel.updateBookById(book_id);
+    if (genres) {
+        // delete relation book-genre
+        await bookModel.deleteBookGenre(book.book_id);
+        const getGenres = await bookModel.findAllGenres();
+        array_genres = genres.split(',').map((genre) => genre.trim());
+        array_genres.forEach(async (genre) => {
+            const existGenre = getGenres.find(
+                (genre_db) => genre_db.name === genre
+            );
+            if (!existGenre) {
+                const newGenre = await bookModel.insertGenre(genre);
+                await bookModel.insertBookGenre(
+                    book.book_id,
+                    newGenre.genre_id
+                );
+            } else {
+                await bookModel.insertBookGenre(
+                    book.book_id,
+                    existGenre.genre_id
+                );
+            }
+        });
+    }
+    await bookModel.updateBookById(
+        book.title,
+        book.image,
+        book.price,
+        book.quantity,
+        book.discount,
+        book.book_id
+    );
     return res.status(200).json({
         success: true,
         data: book

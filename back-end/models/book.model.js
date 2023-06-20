@@ -131,7 +131,7 @@ const insertBookGenre = async (book_id, genre_id) => {
 };
 
 const deleteBookGenre = async (book_id) => {
-    const books_genres = await db.one(
+    const books_genres = await db.none(
         'DELETE FROM books_genres where book_id = $1',
         book_id
     );
@@ -140,14 +140,13 @@ const deleteBookGenre = async (book_id) => {
 
 const updateBookById = async (title, image, price, quantity, discount, id) => {
     const updateQuery = `UPDATE books SET title = $1, image = $2, price = $3, quantity = $4, discount = $5 WHERE book_id = ${id} RETURNING *`;
-    const book = await db.one(
-        updateQuery,
+    const book = await db.one(updateQuery, [
         title,
         image,
         price,
         quantity,
         discount
-    );
+    ]);
     return book;
 };
 
