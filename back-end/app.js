@@ -10,7 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static file
-app.use('/', express.static('uploads'));
+app.use('/images', express.static('uploads'));
+app.use('/profiles', express.static('uploads'));
 
 // Logger
 app.use(logger('dev'));

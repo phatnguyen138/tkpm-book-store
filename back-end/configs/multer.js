@@ -1,17 +1,19 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+const { Error } = require('../helpers/error.helper');
 
 module.exports = {
     dest: path.resolve(__dirname, '..', 'uploads'),
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(
-                new Error('Not found directory'),
-                path.resolve(__dirname, '..', 'uploads')
-            );
+            const uploadPath = path.resolve(__dirname, '..', 'uploads');
+            if (!fs.existsSync(uploadPath))
+                cb(new Error(400, 'Not found directory'), false);
+            else cb(null, uploadPath);
         },
         filename: (req, file, cb) => {
-            cb(null, file.originalname) + '_' + Date.now();
+            cb(null, Date.now() + '_' + file.originalname);
         }
     }),
     limits: {
@@ -21,8 +23,6 @@ module.exports = {
         const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (allowedMimes.includes(file.mimetype)) {
             cb(null, true);
-        } else {
-            cb(new Error('Invalid file type'), false);
-        }
+        } else cb(new Error(400, 'Invalid file type'), false);
     }
 };

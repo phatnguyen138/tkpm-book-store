@@ -1,4 +1,5 @@
 const bookModel = require('../models/book.model');
+const { Error } = require('../helpers/error.helper');
 
 /* Genre Controller */
 
@@ -10,8 +11,9 @@ const getGenres = async (req, res) => {
     });
 };
 
-const createGenre = async (req, res) => {
+const createGenre = async (req, res, next) => {
     const genre_name = req.body.name;
+    if (!genre_name) return next(new Error(400, 'Missing fields'));
     const genre = await bookModel.insertGenre(genre_name);
     return res.status(201).json({
         success: true,
@@ -19,9 +21,10 @@ const createGenre = async (req, res) => {
     });
 };
 
-const updateGenre = async (req, res) => {
+const updateGenre = async (req, res, next) => {
     const genre_name = req.body.name;
     const genre_id = req.params.id;
+    if (!genre_name || !genre_id) return next(handle(400, 'Missing fields'));
     const genre = await bookModel.updateGenreById(genre_name, genre_id);
     return res.status(200).json({
         success: true,
@@ -47,8 +50,9 @@ const getAuthors = async (req, res) => {
     });
 };
 
-const createAuthor = async (req, res) => {
+const createAuthor = async (req, res, next) => {
     const author_name = req.body.name;
+    if (!author_name) return next(new Error(400, 'Missing fields'));
     const author = await bookModel.insertAuthor(author_name);
     return res.status(201).json({
         success: true,
@@ -56,9 +60,11 @@ const createAuthor = async (req, res) => {
     });
 };
 
-const updateAuthor = async (req, res) => {
+const updateAuthor = async (req, res, next) => {
     const author_name = req.body.name;
     const author_id = req.params.id;
+    if (!author_name || !author_id)
+        return next(new Error(400, 'Missing fields'));
     const author = await bookModel.updateAuthorById(author_name, author_id);
     return res.status(200).json({
         success: true,
@@ -119,12 +125,7 @@ const createBook = async (req, res, next) => {
         !genres ||
         !authors
     )
-        return res.status(400).json({
-            success: false,
-            error: {
-                message: 'Missing credentials'
-            }
-        });
+        return next(new Error(400, 'Missing fields'));
 
     // insert book
     const book = await bookModel.insertBook(
@@ -143,12 +144,8 @@ const createBook = async (req, res, next) => {
             (author_db) => author_db.name === author
         );
         if (!existAuthor) {
-            console.log('not found author');
-            const new_author = await bookModel.insertAuthor(author);
-            await bookModel.insertBookAuthor(
-                book.book_id,
-                new_author.author_id
-            );
+            const newAuthor = await bookModel.insertAuthor(author);
+            await bookModel.insertBookAuthor(book.book_id, newAuthor.author_id);
         } else {
             await bookModel.insertBookAuthor(
                 book.book_id,
@@ -165,21 +162,20 @@ const createBook = async (req, res, next) => {
             (genre_db) => genre_db.name === genre
         );
         if (!existGenre) {
-            console.log('not found genre');
-            const new_genre = await bookModel.insertGenre(genre);
-            await bookModel.insertBookGenre(book.book_id, new_genre.genre_id);
+            const newGenre = await bookModel.insertGenre(genre);
+            await bookModel.insertBookGenre(book.book_id, newGenre.genre_id);
         } else {
             await bookModel.insertBookGenre(book.book_id, existGenre.genre_id);
         }
     });
 
-    const staticURL = 'http://localhost:3000/';
+    const staticURL = `http://localhost:3000/images/${req.file.filename}`;
     return res.status(201).json({
         success: true,
         data: {
             book_id: book.book_id,
             title,
-            image: staticURL + req.file.filename,
+            image: staticURL,
             price,
             quantity,
             discount,
