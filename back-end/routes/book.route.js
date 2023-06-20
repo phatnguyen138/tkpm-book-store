@@ -9,6 +9,7 @@ const upload = multer(multerConfig);
 bookRoute
     .get('/', bookController.getBooks)
     .post('/', upload.single('image'), bookController.createBook)
+    .put('/:id', upload.single('image'), bookController.updateBook)
 
     .get('/genres', bookController.getGenres)
     .post('/genres', bookController.createGenre)

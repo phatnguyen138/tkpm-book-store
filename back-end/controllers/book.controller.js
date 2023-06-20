@@ -185,6 +185,90 @@ const createBook = async (req, res, next) => {
     });
 };
 
+const updateBook = async (req, res, next) => {
+    const { title, price, quantity, discount, authors, genres } = req.body;
+    const image = req.file
+        ? `http://localhost:3000/images${req.file.filename}`
+        : undefined;
+    const updatedBook = {
+        title,
+        image,
+        price,
+        quantity,
+        discount,
+        authors,
+        genres
+    };
+    const book_id = req.params.id;
+    let book = await bookModel.findBookById(book_id);
+
+    if (
+        !title &&
+        !req.file &&
+        !price &&
+        !quantity &&
+        !discount &&
+        !authors &&
+        !genres
+    ) {
+        return res.status(200).json({
+            success: true,
+            data: book
+        });
+    }
+    for (let prop in updatedBook) {
+        if (
+            updatedBook.hasOwnProperty(prop) &&
+            updatedBook[prop] !== undefined
+        ) {
+            book[prop] = updatedBook[prop];
+        }
+    }
+    console.log('new book after updated', book);
+
+    // delete relation book-author
+    await bookModel.deleteBookAuthor(book.book_id);
+    // check if authors exist
+    array_authors = authors.split(',').map((author) => author.trim());
+    const getAuthors = await bookModel.findAllAuthors();
+    array_authors.forEach(async (author) => {
+        const existAuthor = getAuthors.find(
+            (author_db) => author_db.name === author
+        );
+        if (!existAuthor) {
+            const newAuthor = await bookModel.insertAuthor(author);
+            await bookModel.insertBookAuthor(book.book_id, newAuthor.author_id);
+        } else {
+            await bookModel.insertBookAuthor(
+                book.book_id,
+                existAuthor.author_id
+            );
+        }
+    });
+
+    // delete relation book-genre
+    await bookModel.deleteBookGenre(book.book_id);
+    // check if genres exist
+    const getGenres = await bookModel.findAllGenres();
+    array_genres = genres.split(',').map((genre) => genre.trim());
+    array_genres.forEach(async (genre) => {
+        const existGenre = getGenres.find(
+            (genre_db) => genre_db.name === genre
+        );
+        if (!existGenre) {
+            const newGenre = await bookModel.insertGenre(genre);
+            await bookModel.insertBookGenre(book.book_id, newGenre.genre_id);
+        } else {
+            await bookModel.insertBookGenre(book.book_id, existGenre.genre_id);
+        }
+    });
+    await bookModel.updateBookById(book_id);
+    return res.status(200).json({
+        success: true,
+        data: book
+    });
+};
+
 const removeBook = async (req, res) => {
     const book_id = req.params.id;
     await bookModel.deleteBook(book_id);
@@ -205,5 +289,6 @@ module.exports = {
     removeGenre,
     removeAuthor,
     updateGenre,
-    updateAuthor
+    updateAuthor,
+    updateBook
 };

@@ -71,10 +71,6 @@ const findAllBooks = async (limit = 'ALL', offset = 0) => {
 };
 
 const findBookById = async (id) => {
-    // const book = await db.oneOrNone(
-    //     'SELECT * FROM books WHERE book_id = $1',
-    //     id
-    // );
     const book = await db.oneOrNone(
         `SELECT b.book_id, b.title, b.image, b.price, b.quantity, b.discount, STRING_AGG(DISTINCT a.name, ', ') AS authors, STRING_AGG(DISTINCT g.name, ', ') AS genres
         FROM books AS b LEFT JOIN books_authors AS ba ON b.book_id = ba.book_id 
@@ -118,12 +114,41 @@ const insertBookAuthor = async (book_id, author_id) => {
     return books_authors;
 };
 
+const deleteBookAuthor = async (book_id) => {
+    const books_authors = await db.none(
+        'DELETE FROM books_authors where book_id = $1',
+        book_id
+    );
+    return books_authors;
+};
+
 const insertBookGenre = async (book_id, genre_id) => {
     const books_genres = await db.one(
         'INSERT INTO books_genres (book_id, genre_id) VALUES ($1, $2) RETURNING *',
         [book_id, genre_id]
     );
     return books_genres;
+};
+
+const deleteBookGenre = async (book_id) => {
+    const books_genres = await db.one(
+        'DELETE FROM books_genres where book_id = $1',
+        book_id
+    );
+    return books_genres;
+};
+
+const updateBookById = async (title, image, price, quantity, discount, id) => {
+    const updateQuery = `UPDATE books SET title = $1, image = $2, price = $3, quantity = $4, discount = $5 WHERE book_id = ${id} RETURNING *`;
+    const book = await db.one(
+        updateQuery,
+        title,
+        image,
+        price,
+        quantity,
+        discount
+    );
+    return book;
 };
 
 module.exports = {
@@ -140,5 +165,8 @@ module.exports = {
     insertBookGenre,
     insertGenre,
     updateAuthorById,
-    updateGenreById
+    updateGenreById,
+    updateBookById,
+    deleteBookAuthor,
+    deleteBookGenre
 };
