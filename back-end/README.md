@@ -23,6 +23,7 @@ After that, the server will be running on port 3000. You can also access it thro
 -   Get books: [GET] /books
 -   Get book by id: [GET] /books/:id
 -   Create book: [POST] /books
+-   Update book: [PUT] /books/:id
 -   Delete book: [DELETE] /books/:id
 
 **Genres**
