@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static file
 app.use('/images', express.static('uploads'));
-app.use('/profiles', express.static('uploads'));
+app.use('/avatars', express.static('uploads'));
 
 // Logger
 app.use(logger('dev'));

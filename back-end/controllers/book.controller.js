@@ -188,6 +188,11 @@ const createBook = async (req, res, next) => {
 const updateBook = async (req, res, next) => {
     const { title, price, quantity, discount, authors, genres } = req.body;
 
+    // get book from book_id
+    const book_id = req.params.id;
+    const book = await bookModel.findBookById(book_id);
+    if (!book) return next(new Error(404, 'Not found'));
+
     // check if no thing to update
     if (
         !title &&
@@ -204,10 +209,8 @@ const updateBook = async (req, res, next) => {
         });
     }
 
-    // init new book object
-    const book_id = req.params.id;
     const image = req.file
-        ? `http://localhost:3000/images${req.file.filename}`
+        ? `http://localhost:3000/images/${req.file.filename}`
         : undefined;
     const updatedBook = {
         title,
@@ -220,7 +223,6 @@ const updateBook = async (req, res, next) => {
     };
 
     // replace new book to old book
-    let book = await bookModel.findBookById(book_id);
     for (let prop in updatedBook) {
         if (
             updatedBook.hasOwnProperty(prop) &&

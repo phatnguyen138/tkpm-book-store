@@ -6,10 +6,10 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const signUp = async (req, res, next) => {
-    const { email, password, fullname, address } = req.body;
+    const { fullname, password, email, address } = req.body;
 
     // check if fields exist
-    if (!email || !password || !fullname || !address)
+    if (!fullname || !password || !email || !address)
         return next(new Error(400, 'Missing credentials'));
 
     // check if email is already in use
@@ -18,7 +18,7 @@ const signUp = async (req, res, next) => {
 
     // hash password
     const hashed = await bcrypt.hash(password, saltRounds);
-    const newUser = await userModel.create(email, hashed, fullname, address);
+    const newUser = await userModel.create(fullname, email, hashed, address);
     return res.status(201).json({
         success: true,
         data: newUser
@@ -49,8 +49,51 @@ const auth = (req, res) => {
     });
 };
 
+const updateUser = async (req, res, next) => {
+    const { fullname, email, address, phone } = req.body;
+
+    const user_id = req.params.id;
+    const user = await userModel.findById(user_id);
+    if (!user) return next(new Error(404, 'Not found'));
+
+    if (!fullname && !email && !req.file && !address && !phone)
+        return res.status(200).json({
+            success: true,
+            data: user
+        });
+
+    const avatar = req.file
+        ? `http://localhost:3000/avatars/${req.file.filename}`
+        : undefined;
+    const updatedUser = { fullname, email, avatar, address, phone };
+
+    // replace new user to old user
+    for (let prop in updatedUser) {
+        if (
+            updatedUser.hasOwnProperty(prop) &&
+            updatedUser[prop] !== undefined
+        ) {
+            user[prop] = updatedUser[prop];
+        }
+    }
+
+    await userModel.update(
+        user.fullname,
+        user.email,
+        user.avatar,
+        user.address,
+        user.phone,
+        user.user_id
+    );
+    return res.status(200).json({
+        success: true,
+        data: user
+    });
+};
+
 module.exports = {
     signUp,
     signIn,
-    auth
+    auth,
+    updateUser
 };

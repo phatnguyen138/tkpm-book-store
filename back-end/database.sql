@@ -18,7 +18,7 @@ CREATE TABLE authors (
 CREATE TABLE books (
     book_id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    image VARCHAR(100),
+    image VARCHAR(500),
     price REAL NOT NULL,
     quantity INT NOT NULL,
     discount REAL DEFAULT 0
@@ -50,6 +50,7 @@ CREATE TABLE users (
     fullname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    avatar VARCHAR(500),
     address VARCHAR(200),
     phone VARCHAR(100),
     role_id INT NOT NULL DEFAULT 3,
