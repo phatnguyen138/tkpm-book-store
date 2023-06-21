@@ -53,7 +53,7 @@ CREATE TABLE users (
     avatar VARCHAR(500),
     address VARCHAR(200),
     phone VARCHAR(100),
-    role_id INT NOT NULL DEFAULT 3,
+    role_id INT NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
 

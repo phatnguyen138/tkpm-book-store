@@ -5,8 +5,16 @@ const { Error } = require('../helpers/error.helper');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const getUsers = async (req, res, next) => {
+    const users = await userModel.findAll();
+    return res.status(200).json({
+        success: true,
+        data: users
+    });
+};
+
 const signUp = async (req, res, next) => {
-    const { fullname, password, email, address } = req.body;
+    const { fullname, password, email, address, role_id } = req.body;
 
     // check if fields exist
     if (!fullname || !password || !email || !address)
@@ -18,7 +26,13 @@ const signUp = async (req, res, next) => {
 
     // hash password
     const hashed = await bcrypt.hash(password, saltRounds);
-    const newUser = await userModel.create(fullname, email, hashed, address);
+    const newUser = await userModel.create(
+        fullname,
+        email,
+        hashed,
+        address,
+        role_id
+    );
     return res.status(201).json({
         success: true,
         data: newUser
@@ -42,7 +56,8 @@ const signIn = async (req, res, next) => {
 };
 
 const auth = (req, res) => {
-    console.log(req.user_id);
+    console.log('user id', req.user_id);
+    console.log('role id', req.role_id);
     return res.status(200).json({
         success: true,
         message: 'Authenticate successfully'
@@ -77,6 +92,11 @@ const updateUser = async (req, res, next) => {
         }
     }
 
+    // check email is exist
+    const isExistEmail = await userModel.findByEmail(user.email);
+    if (isExistEmail && isExistEmail.user_id !== user.user_id)
+        return next(new Error(400, 'Email is already in use'));
+
     await userModel.update(
         user.fullname,
         user.email,
@@ -91,9 +111,19 @@ const updateUser = async (req, res, next) => {
     });
 };
 
+const deleteUser = async (req, res, next) => {
+    const user_id = req.params.id;
+    await userModel.remove(user_id);
+    return res.status(200).json({
+        success: true
+    });
+};
+
 module.exports = {
+    getUsers,
     signUp,
     signIn,
     auth,
-    updateUser
+    updateUser,
+    deleteUser
 };

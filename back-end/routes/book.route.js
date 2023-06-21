@@ -2,7 +2,7 @@ const multer = require('multer');
 const multerConfig = require('../configs/multer');
 const bookRoute = require('express').Router();
 const bookController = require('../controllers/book.controller');
-const verifyToken = require('../middlewares/auth');
+const { verifyToken } = require('../middlewares/auth');
 
 const upload = multer(multerConfig);
 

@@ -1,7 +1,7 @@
 const db = require('../configs/db');
 
 const findAll = async () => {
-    const users = await db.any('SELECT * FROM users');
+    const users = await db.any('SELECT * FROM users ORDER BY user_id ASC');
     return users;
 };
 
@@ -20,10 +20,10 @@ const findById = async (id) => {
     return user;
 };
 
-const create = async (fullname, email, password, address) => {
+const create = async (fullname, email, password, address, role_id = 3) => {
     const user = await db.one(
-        'INSERT INTO users (fullname, email, password, address) VALUES ($1, $2, $3, $4) RETURNING *',
-        [fullname, email, password, address]
+        'INSERT INTO users (fullname, email, password, address, role_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [fullname, email, password, address, role_id]
     );
     return user;
 };
@@ -40,10 +40,16 @@ const update = async (fullname, email, avatar, address, phone, id) => {
     return user;
 };
 
+const remove = async (id) => {
+    const res = await db.none('DELETE FROM users WHERE user_id = $1', id);
+    return res;
+};
+
 module.exports = {
     findAll,
     create,
     findByEmail,
     findById,
-    update
+    update,
+    remove
 };
