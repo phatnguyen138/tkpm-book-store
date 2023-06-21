@@ -1,13 +1,13 @@
 const db = require('../configs/db');
 
 const findAll = async () => {
-    const users = await db.any('SELECT * FROM customers');
+    const users = await db.any('SELECT * FROM users');
     return users;
 };
 
 const findByEmail = async (email) => {
     const users = await db.oneOrNone(
-        'SELECT * FROM customers WHERE email = $1',
+        'SELECT * FROM users WHERE email = $1',
         email
     );
     return users;
@@ -15,7 +15,7 @@ const findByEmail = async (email) => {
 
 const create = async (email, password, fullname, address) => {
     const user = await db.one(
-        'INSERT INTO customers (email, password, fullname, address) VALUES ($1, $2, $3, $4) RETURNING *',
+        'INSERT INTO users (email, password, fullname, address) VALUES ($1, $2, $3, $4) RETURNING *',
         [email, password, fullname, address]
     );
     return user;

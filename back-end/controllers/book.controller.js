@@ -187,21 +187,8 @@ const createBook = async (req, res, next) => {
 
 const updateBook = async (req, res, next) => {
     const { title, price, quantity, discount, authors, genres } = req.body;
-    const image = req.file
-        ? `http://localhost:3000/images${req.file.filename}`
-        : undefined;
-    const updatedBook = {
-        title,
-        image,
-        price,
-        quantity,
-        discount,
-        authors,
-        genres
-    };
-    const book_id = req.params.id;
-    let book = await bookModel.findBookById(book_id);
 
+    // check if no thing to update
     if (
         !title &&
         !req.file &&
@@ -216,6 +203,24 @@ const updateBook = async (req, res, next) => {
             data: book
         });
     }
+
+    // init new book object
+    const book_id = req.params.id;
+    const image = req.file
+        ? `http://localhost:3000/images${req.file.filename}`
+        : undefined;
+    const updatedBook = {
+        title,
+        image,
+        price,
+        quantity,
+        discount,
+        authors,
+        genres
+    };
+
+    // replace new book to old book
+    let book = await bookModel.findBookById(book_id);
     for (let prop in updatedBook) {
         if (
             updatedBook.hasOwnProperty(prop) &&
@@ -224,7 +229,6 @@ const updateBook = async (req, res, next) => {
             book[prop] = updatedBook[prop];
         }
     }
-    console.log('new book after updated', book);
 
     // check if authors exist
     if (authors) {
@@ -275,6 +279,7 @@ const updateBook = async (req, res, next) => {
             }
         });
     }
+    // update book table
     await bookModel.updateBookById(
         book.title,
         book.image,
@@ -298,17 +303,17 @@ const removeBook = async (req, res) => {
 };
 
 module.exports = {
-    createGenre,
     createAuthor,
     createBook,
+    createGenre,
     getAuthors,
     getBookById,
     getBooks,
     getGenres,
+    removeAuthor,
     removeBook,
     removeGenre,
-    removeAuthor,
-    updateGenre,
     updateAuthor,
-    updateBook
+    updateBook,
+    updateGenre
 };

@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
 
     try {
         const tokenDecoded = decodeToken(token);
-        req.customer_id = tokenDecoded.id;
+        req.user_id = tokenDecoded.id;
         next();
     } catch (error) {
         return next(new Error(403, 'Forbidden'));

@@ -153,6 +153,8 @@ const updateBookById = async (title, image, price, quantity, discount, id) => {
 module.exports = {
     deleteAuthor,
     deleteBook,
+    deleteBookAuthor,
+    deleteBookGenre,
     deleteGenre,
     findAllAuthors,
     findAllBooks,
@@ -164,8 +166,6 @@ module.exports = {
     insertBookGenre,
     insertGenre,
     updateAuthorById,
-    updateGenreById,
     updateBookById,
-    deleteBookAuthor,
-    deleteBookGenre
+    updateGenreById
 };
