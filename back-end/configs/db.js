@@ -1,5 +1,10 @@
 require('dotenv').config();
 const pgp = require('pg-promise')({});
+const moment = require('moment');
+
+pgp.pg.types.setTypeParser(1114, function (stringValue) {
+    return moment(stringValue).format('YYYY-MM-DD HH:mm:ss');
+});
 
 const cn = {
     host: process.env.DB_HOST,

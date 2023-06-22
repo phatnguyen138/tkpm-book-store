@@ -75,6 +75,8 @@ CREATE TABLE order_items (
     FOREIGN KEY (book_id) REFERENCES books (book_id)
 );
 
+ALTER DATABASE "BookStore" SET "TimeZone" TO 'Asia/Ho_Chi_Minh';
+
 -- GENERATE SAMPLE DATA
 -- Insert data into tables
 INSERT INTO roles (name)

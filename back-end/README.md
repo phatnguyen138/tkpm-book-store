@@ -14,6 +14,7 @@ After that, the server will be running on port 3000. You can also access it thro
 
 ### Users
 
+-   Get all users: [GET] /users
 -   Sign Up: [POST] /users/signup
 -   Sign In: [POST] /users/signin
 -   Update user: [PUT] /users/update/:id

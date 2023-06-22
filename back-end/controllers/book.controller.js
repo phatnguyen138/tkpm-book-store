@@ -92,6 +92,24 @@ const getBooks = async (req, res) => {
             const book_title = book.title.includes(title);
             return author_name && genre_name && book_title;
         });
+    } else if (title && genre) {
+        books = books.filter((book) => {
+            const genre_name = book.genres.includes(genre);
+            const book_title = book.title.includes(title);
+            return genre_name && book_title;
+        });
+    } else if (title && author) {
+        books = books.filter((book) => {
+            const author_name = book.authors.includes(author);
+            const book_title = book.title.includes(title);
+            return author_name && book_title;
+        });
+    } else if (genre && author) {
+        books = books.filter((book) => {
+            const author_name = book.authors.includes(author);
+            const genre_name = book.genres.includes(genre);
+            return author_name && genre_name;
+        });
     } else if (title) {
         books = books.filter((book) => book.title.includes(title));
     } else if (author) {
