@@ -17,7 +17,11 @@ app.use('/avatars', express.static('uploads'));
 app.use(logger('dev'));
 
 // Cors
-app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5000'],
+    credentials: true,
+  };
+app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/v1', router);
