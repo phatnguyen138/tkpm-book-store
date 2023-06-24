@@ -18,7 +18,7 @@ After that, the server will be running on port 3000. You can also access it thro
 -   Get profile user: [GET] /users/profile (**Authentication**)
 -   Sign Up: [POST] /users/signup
 -   Sign In: [POST] /users/signin
--   Update user: [PUT] /users/update/:id (**Authentication and Authorization**)
+-   Update user: [PUT] /users/update/{user_id} (**Authentication and Authorization**)
 -   Reset password: [PATCH] /users/reset (**Authentication**)
 -   Authentication: [GET] /users/auth (**Authentication**)
 
@@ -46,5 +46,9 @@ After that, the server will be running on port 3000. You can also access it thro
 -   Delete author: [DELETE] /books/authors/{author_id} (**Authentication and Authorization**)
 
 ### Orders
+
+-   Get all orders: [GET] /orders
+-   Get order by id: [GET] /orders/{order_id}
+-   Create order: [POST] /orders
 
 See the API documentation for more details [here](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a).
