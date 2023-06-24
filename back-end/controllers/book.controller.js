@@ -4,10 +4,19 @@ const { Error } = require('../helpers/error.helper');
 /* Genre Controller */
 
 const getGenres = async (req, res) => {
-    const books = await bookModel.findAllGenres();
+    const genres = await bookModel.findAllGenres();
     return res.status(200).json({
         success: true,
-        data: books
+        data: genres
+    });
+};
+
+const getGenreById = async (req, res) => {
+    const genre_id = req.params.id;
+    const genre = await bookModel.findGenreById(genre_id);
+    return res.status(200).json({
+        success: true,
+        data: genre
     });
 };
 
@@ -24,8 +33,35 @@ const createGenre = async (req, res, next) => {
 const updateGenre = async (req, res, next) => {
     const genre_name = req.body.name;
     const genre_id = req.params.id;
-    if (!genre_name || !genre_id) return next(handle(400, 'Missing fields'));
-    const genre = await bookModel.updateGenreById(genre_name, genre_id);
+    const genre = await bookModel.findGenreById(genre_id);
+
+    // check if no thing to update
+    if (!genre_name && !req.file) {
+        return res.status(200).json({
+            success: true,
+            data: genre
+        });
+    }
+
+    const image = req.file
+        ? `http://localhost:3000/covers/${req.file.filename}`
+        : undefined;
+    const updatedGenre = {
+        name: genre_name,
+        image
+    };
+
+    // replace new genre to old genre
+    for (let prop in updatedGenre) {
+        if (
+            updatedGenre.hasOwnProperty(prop) &&
+            updatedGenre[prop] !== undefined
+        ) {
+            genre[prop] = updatedGenre[prop];
+        }
+    }
+
+    await bookModel.updateGenreById(genre.name, genre.image, genre_id);
     return res.status(200).json({
         success: true,
         data: genre
@@ -324,6 +360,7 @@ const removeBook = async (req, res) => {
 
 module.exports = {
     createAuthor,
+    getGenreById,
     createBook,
     createGenre,
     getAuthors,

@@ -7,7 +7,8 @@
 -- Create the tables
 CREATE TABLE genres (
     genre_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    image VARCHAR(500)
 );
 
 CREATE TABLE authors (
@@ -86,18 +87,18 @@ VALUES
 	('Customer');
 
 -- Insert data into tables
-INSERT INTO genres (name)
+INSERT INTO genres (name, image)
 VALUES
-    ('Fiction'),
-    ('Mystery'),
-    ('Science Fiction'),
-    ('Romance'),
-    ('Thriller'),
-    ('Fantasy'),
-    ('Biography'),
-    ('History'),
-    ('Self-Help'),
-    ('Horror');
+    ('Fiction', 'http://localhost:3000/covers/fiction.jpg'),
+    ('Mystery', 'http://localhost:3000/covers/mystery.jpg'),
+    ('Science Fiction', 'http://localhost:3000/covers/sci-fi.jpg'),
+    ('Romance', 'http://localhost:3000/covers/romance.jpg'),
+    ('Thriller', 'http://localhost:3000/covers/thriller.jpg'),
+    ('Fantasy', 'http://localhost:3000/covers/fantasy.jpg'),
+    ('Biography', 'http://localhost:3000/covers/biography.jpg'),
+    ('History', 'http://localhost:3000/covers/history.jpg' ),
+    ('Self-Help', 'http://localhost:3000/covers/self-help.jpg'),
+    ('Horror', 'http://localhost:3000/covers/horror.jpg');
 
 INSERT INTO authors (name)
 VALUES

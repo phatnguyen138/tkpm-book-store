@@ -15,31 +15,36 @@ After that, the server will be running on port 3000. You can also access it thro
 ### Users
 
 -   Get all users: [GET] /users
+-   Get profile user: [GET] /users/profile (**Authentication**)
 -   Sign Up: [POST] /users/signup
 -   Sign In: [POST] /users/signin
--   Update user: [PUT] /users/update/:id
--   Authentication: [GET] /users/auth
+-   Update user: [PUT] /users/update/:id (**Authentication and Authorization**)
+-   Reset password: [PATCH] /users/reset (**Authentication**)
+-   Authentication: [GET] /users/auth (**Authentication**)
 
 ### Books
 
 -   Get books: [GET] /books
--   Get book by id: [GET] /books/:id
--   Create book: [POST] /books
--   Update book: [PUT] /books/:id
--   Delete book: [DELETE] /books/:id
+-   Get book by id: [GET] /books/{book_id}
+-   Create book: [POST] /books (**Authentication and Authorization**)
+-   Update book: [PUT] /books/{book_id} (**Authentication and Authorization**)
+-   Delete book: [DELETE] /books/{book_id} (**Authentication and Authorization**)
 
 **Genres**
 
 -   Get genres: [GET] /books/genres
--   Create genre: [POST] /books/genres
--   Update genre: [PATCH] /books/genres/:id
--   Delete genre: [DELETE] /books/genres/:id
+-   Get genre by id: [GET] /books/genres/{genre_id}
+-   Create genre: [POST] /books/genres (**Authentication and Authorization**)
+-   Update genre: [PUT] /books/genres/{genre_id} (**Authentication and Authorization**)
+-   Delete genre: [DELETE] /books/genres/{genre_id} (**Authentication and Authorization**)
 
 **Authors**
 
 -   Get authors: [GET] /books/authors
--   Create author: [POST] /books/authors
--   Update author: [PATCH] /books/authors/:id
--   Delete author: [DELETE] /books/authors/:id
+-   Create author: [POST] /books/authors (**Authentication and Authorization**)
+-   Update author: [PATCH] /books/authors/{author_id} (**Authentication and Authorization**)
+-   Delete author: [DELETE] /books/authors/{author_id} (**Authentication and Authorization**)
+
+### Orders
 
 See the API documentation for more details [here](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a).

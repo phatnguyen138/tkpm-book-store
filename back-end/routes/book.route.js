@@ -5,26 +5,51 @@ const bookController = require('../controllers/book.controller');
 const {
     verifyToken,
     verifyTokenAndAuthorization,
-    verifyTokenAndAdmin
+    verifyTokenAndAdmin,
+    verifyTokenAndAdminStaff
 } = require('../middlewares/auth');
 
 const upload = multer(multerConfig);
 
 bookRoute
+    .get('/genres/:id', bookController.getGenreById)
     .get('/genres', bookController.getGenres)
-    .post('/genres', bookController.createGenre)
-    .patch('/genres/:id', bookController.updateGenre)
-    .delete('/genres/:id', bookController.removeGenre)
+    .post('/genres', verifyTokenAndAdminStaff, bookController.createGenre)
+    .put(
+        '/genres/:id',
+        verifyTokenAndAdminStaff,
+        upload.single('image'),
+        bookController.updateGenre
+    )
+    .delete('/genres/:id', verifyTokenAndAdminStaff, bookController.removeGenre)
 
     .get('/authors', bookController.getAuthors)
     .post('/authors', bookController.createAuthor)
-    .patch('/authors/:id', bookController.updateAuthor)
-    .delete('/authors/:id', bookController.removeAuthor)
+    .patch(
+        '/authors/:id',
+        verifyTokenAndAdminStaff,
+        bookController.updateAuthor
+    )
+    .delete(
+        '/authors/:id',
+        verifyTokenAndAdminStaff,
+        bookController.removeAuthor
+    )
 
     .get('/', bookController.getBooks)
     .get('/:id', bookController.getBookById)
-    .post('/', upload.single('image'), bookController.createBook)
-    .put('/:id', upload.single('image'), bookController.updateBook)
-    .delete('/:id', bookController.removeBook);
+    .post(
+        '/',
+        verifyTokenAndAdminStaff,
+        upload.single('image'),
+        bookController.createBook
+    )
+    .put(
+        '/:id',
+        verifyTokenAndAdminStaff,
+        upload.single('image'),
+        bookController.updateBook
+    )
+    .delete('/:id', verifyTokenAndAdminStaff, bookController.removeBook);
 
 module.exports = bookRoute;

@@ -7,6 +7,14 @@ const findAllGenres = async () => {
     return genres;
 };
 
+const findGenreById = async (id) => {
+    const genre = await db.oneOrNone(
+        'SELECT * FROM genres WHERE genre_id = $1',
+        id
+    );
+    return genre;
+};
+
 const insertGenre = async (genre_name) => {
     const genre = await db.one(
         'INSERT INTO genres (name) VALUES ($1) RETURNING *',
@@ -15,9 +23,9 @@ const insertGenre = async (genre_name) => {
     return genre;
 };
 
-const updateGenreById = async (genre_name, id) => {
-    const updateQuery = `UPDATE genres SET name = $1 WHERE genre_id = ${id} RETURNING *`;
-    const genre = await db.one(updateQuery, genre_name);
+const updateGenreById = async (genre_name, genre_image, id) => {
+    const updateQuery = `UPDATE genres SET name = $1, image = $2 WHERE genre_id = ${id} RETURNING *`;
+    const genre = await db.one(updateQuery, [genre_name, genre_image]);
     return genre;
 };
 
@@ -152,6 +160,7 @@ const updateBookById = async (title, image, price, quantity, discount, id) => {
 
 module.exports = {
     deleteAuthor,
+    findGenreById,
     deleteBook,
     deleteBookAuthor,
     deleteBookGenre,

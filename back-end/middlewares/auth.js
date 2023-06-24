@@ -27,9 +27,18 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     });
 };
 
+const verifyTokenAndAdminStaff = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.role_id === 1 || req.role_id === 2) {
+            next();
+        } else {
+            return next(new Error(403, 'Forbidden'));
+        }
+    });
+};
 const verifyTokenAndAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
-        if (req.user_id == req.params.id && req.role_id === 1) {
+        if (req.role_id === 1) {
             next();
         } else {
             return next(new Error(403, 'Forbidden'));
@@ -40,5 +49,6 @@ const verifyTokenAndAdmin = (req, res, next) => {
 module.exports = {
     verifyToken,
     verifyTokenAndAuthorization,
-    verifyTokenAndAdmin
+    verifyTokenAndAdmin,
+    verifyTokenAndAdminStaff
 };

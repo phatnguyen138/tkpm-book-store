@@ -13,6 +13,25 @@ const getUsers = async (req, res, next) => {
     });
 };
 
+const getUserById = async (req, res, next) => {
+    const user_id = req.params.id;
+    const user = await userModel.findById(user_id);
+    return res.status(200).json({
+        success: true,
+        data: user
+    });
+};
+
+const getProfileUser = async (req, res, next) => {
+    const user_id = req.user_id;
+    console.log('user_id', user_id);
+    const user = await userModel.findById(user_id);
+    return res.status(200).json({
+        success: true,
+        data: user
+    });
+};
+
 const signUp = async (req, res, next) => {
     const { fullname, password, email, address, role_id } = req.body;
 
@@ -119,11 +138,30 @@ const deleteUser = async (req, res, next) => {
     });
 };
 
+const resetPassword = async (req, res, next) => {
+    const user_id = req.user_id;
+    const { password } = req.body;
+    // check if fields exist
+    if (!password) return next(new Error(400, 'Missing credentials'));
+
+    // hash password
+    const hashed = await bcrypt.hash(password, saltRounds);
+
+    const user = await userModel.reset(hashed, user_id);
+
+    return res.status(200).json({
+        success: true
+    });
+};
+
 module.exports = {
     getUsers,
+    getProfileUser,
+    getUserById,
     signUp,
     signIn,
     auth,
     updateUser,
-    deleteUser
+    deleteUser,
+    resetPassword
 };

@@ -40,6 +40,12 @@ const update = async (fullname, email, avatar, address, phone, id) => {
     return user;
 };
 
+const reset = async (password, id) => {
+    const updateQuery = `UPDATE users SET password = $1 WHERE user_id = ${id} RETURNING *`;
+    const user = await db.one(updateQuery, password);
+    return user;
+};
+
 const remove = async (id) => {
     const res = await db.none('DELETE FROM users WHERE user_id = $1', id);
     return res;
@@ -51,5 +57,6 @@ module.exports = {
     findByEmail,
     findById,
     update,
-    remove
+    remove,
+    reset
 };
