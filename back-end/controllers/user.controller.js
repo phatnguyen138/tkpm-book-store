@@ -130,7 +130,7 @@ const updateUser = async (req, res, next) => {
     });
 };
 
-const deleteUser = async (req, res, next) => {
+const removeUser = async (req, res, next) => {
     const user_id = req.params.id;
     await userModel.remove(user_id);
     return res.status(200).json({
@@ -162,6 +162,6 @@ module.exports = {
     signIn,
     auth,
     updateUser,
-    deleteUser,
+    removeUser,
     resetPassword
 };

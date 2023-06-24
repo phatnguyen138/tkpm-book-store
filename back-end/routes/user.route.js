@@ -23,7 +23,7 @@ userRoute
         userController.updateUser
     )
     .patch('/reset', verifyToken, userController.resetPassword)
-    .delete('/delete/:id', verifyTokenAndAdmin, userController.deleteUser)
+    .delete('/delete/:id', verifyTokenAndAdmin, userController.removeUser)
     .get('/auth', verifyToken, userController.auth);
 
 module.exports = userRoute;

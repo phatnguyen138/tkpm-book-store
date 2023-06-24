@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyTokenAndAuthorization = (req, res, next) => {
     verifyToken(req, res, () => {
-        if (req.user_id == req.params.id && req.role_id === 3) {
+        if (req.role_id === 3) {
             next();
         } else {
             return next(new Error(403, 'Forbidden'));
