@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 
 function ProductListPage(): JSX.Element {
   const { type, page } = useParams();
+  var paging : number = page ? parseInt(page) - 1 : 0;;
   const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
   const [productList, setProductList] = useState<ProductType[]>([]);
   const [genre, setGenre] = useState<string>("");
@@ -23,7 +24,8 @@ function ProductListPage(): JSX.Element {
 
   useEffect(() => {
     setGenre(type && type !== "tat-ca" ? type : "");
-    setOffset(page ? parseInt(page) : 1);
+    paging = page ? parseInt(page) - 1 : 0;
+    setOffset(paging * limit + 1);
   }, [type, page]);
 
   useEffect(() => {
@@ -57,7 +59,7 @@ function ProductListPage(): JSX.Element {
       <div className="flex justify-end mt-4">
         {offset > 1 && (
           <Link
-            to={`/list/${type}/${offset - 1}`}
+            to={`/list/${type}/${paging - 1}`}
             className="px-4 py-2 bg-gray-800 text-white rounded-md mr-2"
           >
             Previous
@@ -68,7 +70,7 @@ function ProductListPage(): JSX.Element {
         </span>
         {1 < 2 && (
           <Link
-            to={`/list/${type}/${offset + 1}`}
+            to={`/list/${type}/${paging + 1}`}
             className="px-4 py-2 bg-gray-800 text-white rounded-md"
           >
             Next
