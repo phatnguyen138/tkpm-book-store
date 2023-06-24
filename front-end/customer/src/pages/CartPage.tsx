@@ -9,7 +9,6 @@ import {
     productReduced,
     productRemoved,
     itemSelected,
-    couponApplied,
     updateCartItemQuantityToDB,
     deleteCartItemFromDB
 } from "../redux/slices/cart"
@@ -46,11 +45,11 @@ const Item = (props : CartItem) => {
                 <div className="w-[120px] h-[150px] rounded-md overflow-hidden border border-gray-200">
                     <img 
                         className="w-full h-full object-cover"
-                        src={props.product.img}
+                        src={props.product.image}
                     />
                 </div>
                 <div className="w-[350px] ">
-                    {props.product.name}
+                    {props.product.title}
                 </div>
                 <div className="mt-1 flex items-center rounded-md border border-slate-200 h-fit w-fit">
                   <button 
@@ -60,7 +59,7 @@ const Item = (props : CartItem) => {
                                 dispatch(updateCartItemQuantityToDB({
                                     option: 'decrease',
                                     body: {
-                                        itemId: props.id,
+                                        itemId: props.book_id,
                                         quantity: 1
                                     }
                                 }))
@@ -69,7 +68,7 @@ const Item = (props : CartItem) => {
                             }
                         } else {
                             if (authUser.name !== "") {
-                                dispatch(deleteCartItemFromDB({itemId: props.id}))
+                                dispatch(deleteCartItemFromDB({itemId: props.book_id}))
                             } else{
                                 dispatch(productRemoved({product: props}))
                             }
@@ -86,7 +85,7 @@ const Item = (props : CartItem) => {
                             dispatch(updateCartItemQuantityToDB({
                                 option: 'increase',
                                 body: {
-                                    itemId: props.id,
+                                    itemId: props.book_id,
                                     quantity: 1
                                 }
                             }))                                    
@@ -101,14 +100,14 @@ const Item = (props : CartItem) => {
                 </div>
                 <div className="flex items-center">
                   <span className="mr-2 text-sky-600 font-semibold ">
-                      {getDiscountPrice(props.product.price, props.product.discountRate, props.quantity, props.appliedCouponValue)}đ
+                      {getDiscountPrice(props.product.price, 0, props.quantity, props.appliedCouponValue)}đ
                   </span>
                   <BsTrashFill 
                       onClick={() => {
                         if(authUser.name !== "") {
-                            dispatch(deleteCartItemFromDB({itemId: props.id}))
+                            dispatch(deleteCartItemFromDB({itemId: props.book_id}))
                         } else {
-                            dispatch(productRemoved(props.id))
+                            dispatch(productRemoved(props.book_id))
                         }
                       }}
                       className="text-sm font-semibold text-red-600 cursor-pointer"

@@ -4,13 +4,7 @@ import DropDownCart from './DropDownCart';
 import logo from '../assets/logo.png';
 
 
-import {addCartItemToDB} from "../redux/slices/cart"
-import {useAppDispatch} from "../hooks/hook"
-import {products} from "../mockData/Products"
-
-
 const HeaderBar = () => {
-    const dispatch = useAppDispatch();
 
     return (
         <header className="flex items-center justify-between py-4 px-6 bg-white shadow">

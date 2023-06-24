@@ -23,7 +23,7 @@ type cartProps = {
 }
 
 const Item = (props: CartItem) => {
-    const authUser = useAppSelector(state => state.user.authUser)
+    const authUser = useAppSelector(state => state.user)
     const dispatch = useAppDispatch()
     return (
         <div className="flex items-center justify-between w-[300px]">
@@ -31,21 +31,21 @@ const Item = (props: CartItem) => {
                 <div className="w-[40px] h-[50px] rounded-md overflow-hidden">
                     <img
                         className="w-full h-full object-cover"
-                        src={props.product?.img}
+                        src={props.product?.image}
                     />
                 </div>
                 <div>
-                    <p>{props.product?.name}</p>
+                    <p>{props.product?.title}</p>
                     <div className="flex items-center gap-2">
                         <p>x {props.quantity}</p>
                         <div className="flex items-center gap-1">
                             <AiOutlinePlus
                                 onClick={() => {
-                                    if (authUser.name !== "") {
+                                    if (authUser.email !== "") {
                                         dispatch(updateCartItemQuantityToDB({
                                             option: 'increase',
                                             body: {
-                                                itemId: props.id,
+                                                itemId: props.book_id,
                                                 quantity: 1
                                             }
                                         }))
@@ -58,11 +58,11 @@ const Item = (props: CartItem) => {
                             <AiOutlineMinus
                                 onClick={() => {
                                     if (props.quantity > 1) {
-                                        if (authUser.name !== "") {
+                                        if (authUser.email !== "") {
                                             dispatch(updateCartItemQuantityToDB({
                                                 option: 'decrease',
                                                 body: {
-                                                    itemId: props.id,
+                                                    itemId: props.book_id,
                                                     quantity: 1
                                                 }
                                             }))
@@ -70,8 +70,8 @@ const Item = (props: CartItem) => {
                                             dispatch(productReduced({ product: props }))
                                         }
                                     } else {
-                                        if (authUser.name !== "") {
-                                            dispatch(deleteCartItemFromDB({ itemId: props.id }))
+                                        if (authUser.email !== "") {
+                                            dispatch(deleteCartItemFromDB({ itemId: props.book_id }))
                                         } else {
                                             dispatch(productRemoved({ product: props }))
                                         }

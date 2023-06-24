@@ -1,36 +1,17 @@
-import { NavLink, useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Product as ProductType } from '../types/Products';
-import { products } from '../mockData/Products';
-import { FilterOption } from '../types/Filter'
-import { getProductList, getShopProductListByFilter } from '../lib/axios/products'
-import { useAsync } from '../hooks/useAsync';
+import { getShopProductListByFilter } from '../lib/axios/products'
 import { useState, useEffect } from "react"
-import { off } from 'process';
 
 function ProductListPage(): JSX.Element {
   const { type, page } = useParams();
-  const genre: string = type && type !== "tat-ca" ? type : "";
-  const offset : number = page ? parseInt(page) : 1;
-  const author : string = "";
-  const title : string = "";
-  const limit : number = 20;
-  const len : number = 100;
-  const endIndex = limit*offset - 1;
-  const filterOptions: Record<string, string | string[]> = {}
-  if(genre != ""){
-    filterOptions.genre = genre;
-  }
-  if(author != ""){
-    filterOptions.author = author;
-  }
-  if(title != ""){
-    filterOptions.title = title;
-  }
-  filterOptions.limit = limit.toString();
-  filterOptions.offset = offset.toString();
   const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
   const [productList, setProductList] = useState<ProductType[]>([]);
-  const fetchProductList = async (filterOptions : Record<string, string | string[]>, token: string) => {
+  const [genre, setGenre] = useState<string>("");
+  const [offset, setOffset] = useState<number>(1);
+  const limit: number = 20;
+
+  const fetchProductList = async (filterOptions: Record<string, string | string[]>, token: string) => {
     try {
       const products = await getShopProductListByFilter(filterOptions, token);
       console.log(products.data)
@@ -41,8 +22,22 @@ function ProductListPage(): JSX.Element {
   };
 
   useEffect(() => {
+    setGenre(type && type !== "tat-ca" ? type : "");
+    setOffset(page ? parseInt(page) : 1);
+  }, [type, page]);
+
+  useEffect(() => {
+    const filterOptions: Record<string, string | string[]> = {};
+    if (genre !== "") {
+      filterOptions.genre = genre;
+    }
+    // Add other filters as needed...
+
+    filterOptions.limit = limit.toString();
+    filterOptions.offset = offset.toString();
+
     fetchProductList(filterOptions, token as string);
-  }, []);
+  }, [genre, offset, token]);
 
   return (
     <div>
@@ -50,7 +45,7 @@ function ProductListPage(): JSX.Element {
         {productList.map((product) => (
           <Link key={product.book_id} to={`/product/${product.book_id}`}>
             <div key={product.book_id}>
-              <img className="w-60 h-80" src={product.image} alt={product.title} />
+              <img className="w-50 h-80" src={product.image} alt={product.title} />
               <p>{product.title}</p>
               <p>{product.authors}</p>
               <p>Giá: ${product.price}</p>
@@ -71,7 +66,7 @@ function ProductListPage(): JSX.Element {
         <span className="px-4 py-2 bg-gray-200 rounded-md mr-2">
           {offset}
         </span>
-        {endIndex < len && (
+        {1 < 2 && (
           <Link
             to={`/list/${type}/${offset + 1}`}
             className="px-4 py-2 bg-gray-800 text-white rounded-md"

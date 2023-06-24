@@ -1,4 +1,3 @@
-import {useParams} from 'react-router-dom'
 import CategoryMenu from "../components/CateGoryMenu";
 import ProductList from "../components/ProductList";
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {CartItem} from "../../types/Products"
+import { CartItem, Product } from '../../types/Products';
 import { 
     addCartItem,
     updateCartItemQuantity,
@@ -15,12 +15,11 @@ const initialState : {items: CartItem[]} = {
 
 export const addCartItemToDB = createAsyncThunk(
     'cart/cartItemAddedToDB',
-    async (newItem : object, { dispatch }) => {        
+    async (newItem : object, { dispatch }) => {   
+        console.log(newItem);     
         const res = await addCartItem(newItem)
         dispatch(productAdded({
-            product: res.product, 
-            quantity: res.quantity, 
-            itemId: res.id
+            
         }))
         return res
     }
@@ -63,15 +62,16 @@ const cartSlice = createSlice({
     initialState, 
     reducers: {
         productAdded: (state, action) => {
-            console.log(action.payload)
-            const itemId = state.items.findIndex(item => item.product.id === action.payload.product.id)
+            console.log("payload: " + action.payload)
+            const itemId = state.items.findIndex(
+                (item) => item.product.book_id === action.payload.product.product_id
+              );
             if(itemId >= 0) {                                
                 console.log(action.payload.quantity);
                 state.items[itemId].quantity += action.payload.quantity
             } else{                
-                
                 const newItem = {
-                    id: action.payload.itemId ? action.payload.itemId : "default id", 
+                    book_id: action.payload.itemId ? action.payload.itemId : "default id", 
                     product: action.payload.product, 
                     quantity: action.payload.quantity, 
                     selected: false,
@@ -87,22 +87,22 @@ const cartSlice = createSlice({
         },
         productReduced: (state, action) => {
             state.items = state.items
-                            .map(item => item.product.id === action.payload.product.id ? {...item, quantity: item.quantity-1} : item)
+                            .map(item => item.product.book_id === action.payload.product.book_id ? {...item, quantity: item.quantity-1} : item)
     
         },
         productRemoved: (state, action) => {
-            state.items = state.items.filter(item => item.product.id !== action.payload.product.id)
+            state.items = state.items.filter(item => item.product.book_id !== action.payload.product.book_id)
         },
         itemSelected: (state, action) => {
-            state.items = state.items.map(item => item.product.id === action.payload.product.id ? {...item, selected: !item.selected} : item)
+            state.items = state.items.map(item => item.product.book_id === action.payload.product.book_id ? {...item, selected: !item.selected} : item)
             console.log(state.items);  
         },
         couponApplied: (state, action) => {
-            state.items = state.items.map(item => item.product.id === action.payload.product.id ? {...item, appliedCouponValue: action.payload.appliedCoupon} : item)
+            state.items = state.items.map(item => item.product.book_id === action.payload.product.book_id ? {...item, appliedCouponValue: action.payload.appliedCoupon} : item)
         },
         orderInfoUpdated: (state, action) => {
             state.items = state.items.map(item => {
-                return item.product.id === action.payload.product.id ? {...item, orderInfo: action.payload.orderInfo } : item
+                return item.product.book_id === action.payload.product.book_id ? {...item, orderInfo: action.payload.orderInfo } : item
             })
         }
     

@@ -22,7 +22,7 @@ type OrderInfo = {
 }
 
 export type CartItem = {
-    id : string,
+    book_id : string,
     selected: boolean,
     quantity: number,
     product: Product

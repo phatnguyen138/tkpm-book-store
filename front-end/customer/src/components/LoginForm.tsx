@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../lib/axios/user';
+import { userLoggedIn } from '../redux/slices/user'
+import { useAppDispatch } from '../hooks/hook'
 
 interface LoginResponse {
   accessToken: string;
@@ -11,10 +13,11 @@ interface LoginResponse {
 //   message: string;
 // }
 
-function LoginForm() : JSX.Element {
+function LoginForm(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useAppDispatch()
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,6 +26,9 @@ function LoginForm() : JSX.Element {
     if ((response as LoginResponse).accessToken) {
       localStorage.setItem("access_token", (response as LoginResponse).accessToken);
       window.location.href = '/';
+      if (email != '' && password != '') {
+        dispatch(userLoggedIn(email))
+      }
       console.log("Login");
     } else {
       console.log("invalid login");

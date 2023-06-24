@@ -1,4 +1,4 @@
-import { CartItem } from "../types/Product"
+import { CartItem } from "../types/Products"
 
 export function getDiscountPrice(price : number, discountRate : number, quantity: number = 1, appliedCoupon: number = 0) : number {
     return Math.ceil(price*(1-discountRate/100)-appliedCoupon)*quantity 
@@ -13,7 +13,7 @@ export function formatCategoryTitle(title: string) {
 export function getCheckoutValue(items: CartItem[]) {
     return items.reduce((prevPrice, item) => {
         return item.selected 
-            ? prevPrice + getDiscountPrice(item.product.price, item.product.discountRate, item.quantity, item.appliedCouponValue) 
+            ? prevPrice + getDiscountPrice(item.product.price, 0, item.quantity, item.appliedCouponValue) 
             : prevPrice
     }, 0)
 }
