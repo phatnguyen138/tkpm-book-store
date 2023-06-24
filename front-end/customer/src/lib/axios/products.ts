@@ -48,13 +48,11 @@ export function getProductListByFilter(filterOptions: any[]) {
     })
 }
 
-export function getShopProductListByFilter(filterOptions: any[], token: string) {    
-    return makeRequest(`/seller/product/filter`,{
+export function getShopProductListByFilter(filterOptions: Record<string, string | string[]>, token: string) {    
+    return makeRequest(`/books`,{
         method: 'get',
         headers: {'authorization': 'Bearer ' + token},
-        params: {
-            options: filterOptions
-        }
+        params :filterOptions
     })
 }
 

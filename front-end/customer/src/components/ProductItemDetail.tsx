@@ -15,15 +15,16 @@ const ProductItemDetail = () => {
     const authUser = useAppSelector(state => state.user.authUser)
     const cartItems = useAppSelector(state => state.cart.items)
     const [quantity, setQuantity] = useState<number>(0)
+    const [itemDetail, setItemDetail] = useState<Product>();
 
     function getCartItemId(cartItems : CartItem[], productId : string) : string | undefined {        
-        const cartItem = cartItems.find(item => item.product?.id === productId)
+        const cartItem = cartItems.find(item => item.product?.book_id === productId)
         return cartItem ? cartItem.id : undefined
     }
 
     async function addToCart(product: Product | undefined, quantity: number, selected: boolean = false) {
         if(quantity > 0) {            
-            const cartItemId = getCartItemId(cartItems, product!.id)
+            const cartItemId = getCartItemId(cartItems, product!.book_id)
             if(authUser.name !== "") {                
                 if(cartItemId) {
                     dispatch(updateCartItemQuantityToDB({
@@ -42,23 +43,31 @@ const ProductItemDetail = () => {
         }
     }
 
-    const {data : product, loading} = useAsync<Product>(() => {      
-        console.log(id);  
-        console.log(getProductById(id as string));
-        return getProductById(id as string)
-    }, [id])
+    const fetchProduct = async (id: string) => {
+        try {
+          const product = await getProductById(id);
+          console.log(product.data)
+          setItemDetail(product.data);
+        } catch (error) {
+          console.log("Error loading item detail");
+        }
+      };
+    
+      useEffect(() => {
+        fetchProduct(id as string);
+      }, []);
 
     return (
         <div className='flex border h-fit border-gray-200 ml` ml-10 mt-5 rounded-sm'>
             <div className='h-[500px] w-[350px] overflow-hidden'>
                 <img 
                     className='w-full h-full object-cover'
-                    src={product?.img} 
+                    src={itemDetail?.image} 
                 />
             </div>
             <div className="px-3 py-4 border-l w-[550px]">
-                <h4 className="font-semibold text-xl">{product?.name}</h4>
-                <div><span className='italic font-semibold'>Tác giả:</span> <span className='font-semibold'>{product?.author}</span></div>
+                <h4 className="font-semibold text-xl">{itemDetail?.title}</h4>
+                <div><span className='italic font-semibold'>Tác giả:</span> <span className='font-semibold'>{itemDetail?.authors}</span></div>
                 <div className="flex items-center gap-2.5">
                     <span className='flex'>
                         <AiFillStar className="text-amber-300"/>
@@ -97,13 +106,13 @@ const ProductItemDetail = () => {
                     <div>
                         <p className='italic font-semibold'>Thể loại:</p>
                     </div>
-                        {product?.genres.map((genre, i) => <div className="font-semibold text-sky-600 border border-sky-600 px-2 py-2 w-fit rounded-md" key={i}>
+                        {itemDetail?.genres.map((genre, i) => <div className="font-semibold text-sky-600 border border-sky-600 px-2 py-2 w-fit rounded-md" key={i}>
                             {genre}
                         </div>)}
                     <div className='my-3 w-full h-[0.5px] bg-gray-200'></div>
 
                     <button 
-                        onClick={() => {addToCart(product, quantity)}}
+                        onClick={() => {addToCart(itemDetail, quantity)}}
                         className="flex items-center rounded-md mt-5 px-[10px] py-[10px]  text-sky-600 border border-sky-600"
                     >
                         <BsCartPlus className="text-lg font-semibold"/>

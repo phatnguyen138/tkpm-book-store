@@ -22,7 +22,6 @@ function LoginForm() : JSX.Element {
     console.log((response as LoginResponse).accessToken);
     if ((response as LoginResponse).accessToken) {
       localStorage.setItem("access_token", (response as LoginResponse).accessToken);
-      localStorage.setItem("refresh_token", (response as LoginResponse).refreshToken);
       window.location.href = '/';
       console.log("Login");
     } else {

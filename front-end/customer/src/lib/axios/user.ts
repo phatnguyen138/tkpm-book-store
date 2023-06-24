@@ -15,7 +15,7 @@ export function registerUser(email: string, password: string, fullName: string, 
         '/users/signup',
         {
             method: 'POST',
-            data: {email: email, password: password, fullName: fullName, address: address}
+            data: {email: email, password: password, fullname: fullName, address: address}
         }
     );
 }
