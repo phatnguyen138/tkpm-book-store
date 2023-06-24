@@ -110,15 +110,16 @@ const Checkout = () => {
           alert("Vui lòng chọn một phương thức thanh toán!")
           return
         }
+        if(address === "") {
+          alert("Vui lòng điền địa chỉ nhận hàng!")
+          return;
+        }
         if(authUser.email === "") {
           alert("Vui lòng đăng nhập để thực hiện thanh toán!")
           return
         }
         if(paymentMethod === "MoMo") {
           alert("Tính năng đang trong quá trình phát triển, vui lòng chọn hình thức thanh toán khác!")
-        }
-        if(address === "") {
-          alert("Vui lòng điền địa chỉ nhận hàng!")
         }
         if(paymentMethod == "Direct") {
             dispatch(createNewOrderFromCartItem({items: checkoutItems, userId: authUser.email}))
