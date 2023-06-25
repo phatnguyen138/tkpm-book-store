@@ -23,7 +23,7 @@ const findByUserId = async (id) => {
     return order;
 };
 
-const create = async (user_id, total_amount) => {
+const create = async (user_id, total_amount = 0) => {
     const order = await db.one(
         'INSERT INTO orders (user_id, total_amount) VALUES ($1, $2) RETURNING *',
         [user_id, total_amount]
@@ -49,12 +49,28 @@ const findAllOrderItems = async () => {
     return orderItems;
 };
 
+const findOrderItemsByOrderId = async (order_id) => {
+    const orderItems = await db.any(
+        'SELECT * FROM order_items WHERE order_id = $1',
+        order_id
+    );
+    return orderItems;
+};
+
 const createOrderItem = async (order_id, book_id, quantity, item_price) => {
     const order = await db.one(
         'INSERT INTO order_items (order_id, book_id, quantity, item_price) VALUES ($1, $2, $3, $4) RETURNING *',
         [order_id, book_id, quantity, item_price]
     );
     return order;
+};
+
+const removeOrderItems = async (id) => {
+    const res = await db.none(
+        'DELETE FROM order_items where order_id = $1',
+        id
+    );
+    return res;
 };
 
 module.exports = {
@@ -64,6 +80,8 @@ module.exports = {
     create,
     update,
     remove,
+    removeOrderItems,
     findAllOrderItems,
+    findOrderItemsByOrderId,
     createOrderItem
 };

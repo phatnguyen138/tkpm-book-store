@@ -13,7 +13,7 @@ orderRoute
         orderController.createOrderItems
     )
 
-    .get('/', orderController.getOrders)
+    .get('/', verifyTokenAndAuthorization, orderController.getOrders)
     .get('/:id', orderController.getOrderById)
     .post('/', orderController.createOrder)
     .put('/', verifyTokenAndAuthorization, orderController.updateOrder)
