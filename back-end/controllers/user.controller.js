@@ -62,7 +62,7 @@ const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) return next(new Error(400, 'Missing credentials'));
     const user = await userModel.findByEmail(email);
-    if (!user) return next(new Error(404, 'Not found email'));
+    if (!user) return next(new Error(404, 'Email not found'));
     const result = await bcrypt.compare(password, user.password);
     if (result === false) return next(new Error(401, 'Incorrect password'));
 

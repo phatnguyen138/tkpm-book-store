@@ -76,6 +76,44 @@ CREATE TABLE order_items (
     FOREIGN KEY (book_id) REFERENCES books (book_id)
 );
 
+CREATE TABLE debt_reports (
+    debt_id SERIAL PRIMARY KEY,
+    report_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    note VARCHAR(500)
+);
+
+CREATE TABLE debt_report_details (
+    debt_id INT NOT NULL,
+    user_id INT NOT NULL,
+    initial_debt_amount REAL,
+    final_debt_amount REAL,
+    FOREIGN KEY (debt_id) REFERENCES debt_reports (debt_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
+
+CREATE TABLE inventory_reports (
+    inventory_id SERIAL PRIMARY KEY,
+    report_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    note VARCHAR(500)
+);
+
+CREATE TABLE inventory_report_details (
+    inventory_id INT NOT NULL,
+    book_id INT NOT NULL,
+    initial_inventory_amount REAL,
+    final_inventory_amount REAL,
+    FOREIGN KEY (inventory_id) REFERENCES inventory_reports (inventory_id),
+    FOREIGN KEY (book_id) REFERENCES books (book_id)
+);
+
+CREATE TABLE regulation (
+    rule_id SERIAL PRIMARY KEY,
+    update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    minimum_inventory_quantity INT NOT NULL,
+    minimum_order_quantity INT NOT NULL,
+    maximum_debt REAL NOT NULL
+);
+
 ALTER DATABASE "BookStore" SET "TimeZone" TO 'Asia/Ho_Chi_Minh';
 
 -- GENERATE SAMPLE DATA

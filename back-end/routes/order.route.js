@@ -6,16 +6,21 @@ const {
 } = require('../middlewares/auth');
 
 orderRoute
-    .get('/items', orderController.getOrderItems)
+    .get('/items', verifyTokenAndAuthorization, orderController.getOrderItems)
     .post(
         '/items',
         verifyTokenAndAuthorization,
         orderController.createOrderItems
     )
+    .post(
+        '/checkout',
+        verifyTokenAndAuthorization,
+        orderController.checkoutOrder
+    )
 
-    .get('/', verifyTokenAndAuthorization, orderController.getOrders)
+    .get('/', orderController.getOrders)
     .get('/:id', orderController.getOrderById)
-    .post('/', orderController.createOrder)
+    .post('/', verifyTokenAndAuthorization, orderController.createOrder)
     .put('/', verifyTokenAndAuthorization, orderController.updateOrder)
     .delete('/', verifyTokenAndAuthorization, orderController.removeOrder);
 
