@@ -2,9 +2,10 @@ import { Product, NewProduct } from '../../types/Products';
 import { makeRequest } from "./makeRequest";
 
 
-export function getProductById(id : string) {
+export function getProductById(id : string, token: string) {
     return makeRequest(`/books/${id}`,{
         method: 'get'
+        
     })
 }
 

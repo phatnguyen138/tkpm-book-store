@@ -35,7 +35,7 @@ const ViewProductList: React.FC = () => {
             </thead>
             <tbody>
               {productList.map((product) => (
-                <tr key={product.id} className="border-b">
+                <tr key={product.book_id} className="border-b">
                   <td className="py-2 px-4 text-center">{product.book_id}</td>
                   <td className="py-2 px-4 text-center">{product.title}</td>
                   <td className="py-2 px-4 text-center">{product.authors}</td>

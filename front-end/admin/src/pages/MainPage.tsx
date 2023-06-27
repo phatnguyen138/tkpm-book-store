@@ -4,6 +4,10 @@ import Sidebar from '../components/SideBar';
 import AddProductPage from './AddProductPage';
 import ViewProductList from './ViewProductList';
 import EditProductPage from './EditProductPage';
+import AddGenre from './AddGenre';
+import AddAuthor from './AddAuthor';
+import ViewGenresPage from './ViewGenresPage';
+import ViewAuthorsPage from './ViewAuthorsPage';
 
 const MainPage: React.FC = () => {
     return (
@@ -22,6 +26,10 @@ const MainPage: React.FC = () => {
                         <Route path="/add-product" element={<AddProductPage />} />
                         <Route path='/edit-product' element={<ViewProductList/>}/>
                         <Route path='/edit-product/:id' element={<EditProductPage/>}/>
+                        <Route path='/add-genre' element={<AddGenre/>}/>
+                        <Route path='/add-author' element={<AddAuthor/>}/>
+                        <Route path='/edit-genre' element={<ViewGenresPage/>}/>
+                        <Route path='/edit-author' element={<ViewAuthorsPage/>}/>
                     </Routes>
                 </div>
             </div>

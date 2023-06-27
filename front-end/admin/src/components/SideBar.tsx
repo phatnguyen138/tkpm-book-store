@@ -37,6 +37,46 @@ const Sidebar: React.FC = () => {
             View Order
           </Link>
         </li>
+        <li>
+          <Link
+            to="/add-genre"
+            className={`block px-4 py-3 hover:bg-blue-600 ${
+              location.pathname === '/add-genre' ? 'bg-blue-600' : ''
+            }`}
+          >
+            Add Genre
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/edit-genre"
+            className={`block px-4 py-3 hover:bg-blue-600 ${
+              location.pathname === '/edit-genre' ? 'bg-blue-600' : ''
+            }`}
+          >
+            Edit Genre
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/add-author"
+            className={`block px-4 py-3 hover:bg-blue-600 ${
+              location.pathname === '/add-author' ? 'bg-blue-600' : ''
+            }`}
+          >
+            Add author
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/edit-author"
+            className={`block px-4 py-3 hover:bg-blue-600 ${
+              location.pathname === '/edit-author' ? 'bg-blue-600' : ''
+            }`}
+          >
+            View author
+          </Link>
+        </li>
         {/* Add more sidebar links as needed */}
       </ul>
     </nav>

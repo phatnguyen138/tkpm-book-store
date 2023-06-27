@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NewProduct } from '../types/Products';
 import { GenreInfo } from '../types/Genres'
 import { Author } from '../types/Authors';
-import { getAllGenres } from '../lib/axios/genre';
+import { getAllGenre } from '../lib/axios/genre';
 import { getAllAuthors } from '../lib/axios/authors';
 import { createNewProduct } from '../lib/axios/products';
 
@@ -21,7 +21,7 @@ const AddProductPage: React.FC = () => {
   useEffect(() => {
     async function fetchGenres() {
       try {
-        const response = await getAllGenres();
+        const response = await getAllGenre();
         const { data } = response;
         const mappedGenres = data.map((genreData: any) => ({
           id: genreData.genre_id,
@@ -209,7 +209,7 @@ const AddProductPage: React.FC = () => {
             className="border border-gray-300 rounded px-3 py-2 w-full"
           >
             {genreList.map((genre) => (
-              <option key={genre.id} value={genre.name}>
+              <option key={genre.genre_id} value={genre.name}>
                 {genre.name}
               </option>
             ))}
