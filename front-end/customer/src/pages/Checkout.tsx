@@ -86,6 +86,7 @@ const ItemList = ({checkoutedItems} : checkoutProps) => {
 const Checkout = () => {
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(undefined);
     const [address,setAddress] = useState<string>("");
+    const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const checkoutItems = useAppSelector((state => {
       return state.cart.items.filter(item => item.selected)
@@ -124,7 +125,10 @@ const Checkout = () => {
         if(paymentMethod == "Direct") {
             dispatch(createNewOrderFromCartItem({items: checkoutItems, userId: authUser.email}))
             alert("Đặt hàng thành công!!")
+            navigate("/")
+            window.location.reload();
         }
+
     }
 
     return (
@@ -133,6 +137,13 @@ const Checkout = () => {
             <ItemList checkoutedItems={checkoutItems}/> 
             <div className="mr-auto mt-2 w-3/5">
               <span className="text-base font-semibold">Địa chỉ người nhận:</span>
+              <textarea className="w-full h-[50px] p-2 border resize-none font-medium text-sm" 
+                onBlur={(e) => setAddress(e.target.value)}
+              >
+              </textarea>
+            </div>
+            <div className="mr-auto mt-2 w-3/5">
+              <span className="text-base font-semibold">Số điện thoại:</span>
               <textarea className="w-full h-[50px] p-2 border resize-none font-medium text-sm" 
                 onBlur={(e) => setAddress(e.target.value)}
               >
