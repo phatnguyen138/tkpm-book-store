@@ -1,4 +1,4 @@
-import { Product } from "../../types/Products";
+import { Product, NewProduct } from '../../types/Products';
 import { makeRequest } from "./makeRequest";
 
 
@@ -37,9 +37,11 @@ export function updateProductStat(product: Product) {
     })
 }
 
-export function createNewProduct(product: any) {
-    return makeRequest(`/seller/product/create`, {
+export function createNewProduct(product: NewProduct) {
+    return makeRequest(`/books`, {
         method: 'post',
-        data: product
+        data: {
+            "title": product.title, "image": product.image, "price": product.price, "authors" : product.authors, "genres": product.genres, "quantity": "100", "discount": "0" 
+        }
     })
 }
