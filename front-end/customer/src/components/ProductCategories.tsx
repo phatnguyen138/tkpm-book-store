@@ -1,19 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
-import {Genre} from '../types/Genres'
-import {genreName} from "../mockData/Genres"
-
-const genres: Genre[] = genreName.map((genre) => {
-    return {
-        id: genre.id,
-        name: genre.name,
-        image: genre.image,
-        description: genre.description
-    }
-});
+import { getAllGenre, getGenreInfo } from "../lib/axios/genre";
+import { GenreInfo, EachGenre } from '../types/Genres'
+import { genreName } from "../mockData/Genres"
 
 function ProductCategories(): JSX.Element {
+    const [infoList, setInfoList] = useState<GenreInfo[]>();
+    const [genres, setGenres] = useState<EachGenre[]>();
+
+    const fetchProduct = async () => {
+        try {
+            const response = await getAllGenre();
+            console.log(response.data)
+            setInfoList(response.data);
+        } catch (error) {
+            console.log("Error loading item detail");
+        }
+    };
+
+    useEffect(() => {
+        fetchProduct();
+    }, []);
+
+
+    useEffect(() => {
+        const fetchGenreInfo = async () => {
+            if (infoList && infoList.length > 0) {
+              const genrePromises = infoList.map(async (genre) => {
+                const genreInfoResponse = await getGenreInfo(genre.genre_id.toString());
+                return genreInfoResponse.data;
+              });
+          
+              const genreInfoList = await Promise.all(genrePromises);
+              setGenres(genreInfoList);
+            }
+          };
+
+        fetchGenreInfo();
+    }, [infoList]);
+    // Set paging
     const [page, setPage] = useState(0);
 
     const onNextPage = () => {
@@ -24,7 +50,7 @@ function ProductCategories(): JSX.Element {
         setPage(page - 1);
     };
 
-    const displayedGenres = genres.slice(page * 5, page * 5 + 5);
+    const displayedGenres = genres?.slice(page * 5, page * 5 + 5);
 
     return (
         <div className="container mx-auto py-8">
@@ -39,8 +65,8 @@ function ProductCategories(): JSX.Element {
                         <IoChevronBack className="text-lg" />
                     </button>
                     <button
-                        className={`rounded-full w-8 h-8 flex items-center justify-center ${genres.length <= (page + 1) * 5 ? 'bg-gray-200' : 'bg-slate-500'}`}
-                        disabled={genres.length <= (page + 1) * 5}
+                        className={`rounded-full w-8 h-8 flex items-center justify-center ${genres?.length?? 0 <= (page + 1) * 5 ? 'bg-gray-200' : 'bg-slate-500'}`}
+                        disabled={Number(genres?.length ?? 0) <= (page + 1) * 5}
                         onClick={onNextPage}
                     >
                         <IoChevronForward className="text-lg" />
@@ -48,8 +74,8 @@ function ProductCategories(): JSX.Element {
                 </div>
             </div>
             <div className="grid grid-cols-5 gap-4">
-                {displayedGenres.map((genre) => (
-                    <NavLink key={genre.id} to={`/list/${genre.description}`}>
+                {displayedGenres?.map((genre) => (
+                    <NavLink key={genre.genre_id} to={`/list/${genre.name}`}>
                         <div className="flex flex-col items-center">
                             <img
                                 src={genre.image}

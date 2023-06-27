@@ -5,3 +5,9 @@ export async function getAllGenre() {
         method: 'get'
     })
 }
+
+export async function getGenreInfo(id: string) {
+    return makeRequest(`/books/genres/${id}`, {
+        method: 'get'
+    })
+}
