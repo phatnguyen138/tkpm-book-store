@@ -16,8 +16,8 @@ const findById = async (id) => {
 };
 
 const findByUserId = async (id) => {
-    const order = await db.oneOrNone(
-        'SELECT * FROM orders WHERE user_id = $1',
+    const order = await db.any(
+        'SELECT * FROM orders WHERE user_id = $1 ORDER BY order_id',
         id
     );
     return order;
@@ -37,8 +37,28 @@ const update = async (total_amount, id) => {
     return order;
 };
 
-const remove = async (id) => {
-    const res = await db.none('DELETE FROM orders where user_id = $1', id);
+const checkout = async (
+    address_shipping,
+    phone_shipping,
+    user_id,
+    order_id
+) => {
+    const order = await db.one(
+        `UPDATE orders SET payment_status = 1, address_shipping = $1, phone_shipping = $2 WHERE user_id = ${user_id} AND order_id = ${order_id} RETURNING *`,
+        [address_shipping, phone_shipping]
+    );
+    return order;
+};
+
+const updateByOrderId = async (total_amount, user_id, order_id) => {
+    const updateQuery = `UPDATE orders SET total_amount = $1 WHERE user_id = ${user_id} AND order_id = ${order_id} RETURNING *`;
+    const order = await db.one(updateQuery, total_amount);
+    return order;
+};
+
+const remove = async (user_id, order_id) => {
+    const deleteQuery = `DELETE FROM orders where user_id = ${user_id} AND order_id = ${order_id}`;
+    const res = await db.none(deleteQuery);
     return res;
 };
 
@@ -77,6 +97,8 @@ module.exports = {
     findAll,
     findById,
     findByUserId,
+    updateByOrderId,
+    checkout,
     create,
     update,
     remove,

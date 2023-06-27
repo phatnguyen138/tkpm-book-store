@@ -63,6 +63,10 @@ CREATE TABLE orders (
     user_id INT NOT NULL,
     order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     total_amount REAL NOT NULL,
+    payment_status INT DEFAULT 0,
+    payment_provider VARCHAR(200) DEFAULT 'direct',
+    address_shipping VARCHAR(500),
+    phone_shipping VARCHAR(500),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
