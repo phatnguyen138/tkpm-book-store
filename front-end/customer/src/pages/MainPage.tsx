@@ -7,6 +7,7 @@ import BookListPage from './BookListPage';
 import ProductDetail from './ProductDetail';
 import Checkout from './Checkout';
 import Profile from './Profile';
+import ProfileEdit from './EditProfile';
 
 
 
@@ -20,6 +21,7 @@ function MainPage() : JSX.Element {
             <Route path='/product/:id' element={<ProductDetail/>}/>
             <Route path='/checkout' element={<Checkout/>}/>
             <Route path='/profile' element={<Profile/>}/>
+            <Route path='/profile/edit' element={<ProfileEdit/>}/>
         </Routes>
         <Footer/>
     </div>

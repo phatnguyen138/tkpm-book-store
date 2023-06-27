@@ -19,3 +19,26 @@ export function registerUser(email: string, password: string, fullName: string, 
         }
     );
 }
+
+export function getUserInfo(token: string){
+    return makeRequest(
+        '/users/profile',
+        {
+            method: 'get',
+            headers: {'authorization': 'Bearer ' + token},
+        }
+    );
+}
+
+export function updateUserProfile(token: string, id: string, fullname: string,email: string, avatar: File, address: string, phone: string){
+    return makeRequest(
+        `/users/update/${id}`,
+        {
+            method: 'put',
+            headers: {'authorization': 'Bearer ' + token},
+            data: {
+                "fullname": fullname, email: email, avatar: avatar, address: address, phone: phone
+            }
+        }
+    );
+}
