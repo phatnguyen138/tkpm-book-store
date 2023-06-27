@@ -1,20 +1,19 @@
 export type Product = {
-    id: string
-    name : string,
-    author: string,
-    img: string,
+    book_id: string
+    title : string,
+    authors: string,
+    image: string,
     price: number,
     quantity: number,
-    genres: string[],
+    genres: string,
 }
 
 export type NewProduct = {
-    name : string,
-    author: string,
-    img: string,
+    title : string,
+    authors: string,
+    image: File | null,
     price: number,
-    quantity: number,
-    genres: string[],
+    genres: string
 }
 
 type OrderInfo = {
