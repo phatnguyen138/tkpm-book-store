@@ -2,7 +2,7 @@ import { makeRequest } from "./makeRequest";
 
 export function loginUser(email: string, password: string){
     return makeRequest(
-        '/auths/login',
+        '/users/signin',
         {
             method: 'POST',
             data: {email: email, password: password}
@@ -12,10 +12,10 @@ export function loginUser(email: string, password: string){
 
 export function registerUser(email: string, password: string, fullName: string, address: string){
     return makeRequest(
-        '/auths/register',
+        '/users/signup',
         {
             method: 'POST',
-            data: {email: email, password: password, fullName: fullName, address: address}
+            data: {email: email, password: password, fullname: fullName, address: address}
         }
     );
 }
