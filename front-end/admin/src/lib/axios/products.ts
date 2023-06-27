@@ -3,13 +3,13 @@ import { makeRequest } from "./makeRequest";
 
 
 export function getProductById(id : string) {
-    return makeRequest(`/product/${id}`,{
+    return makeRequest(`/books/${id}`,{
         method: 'get'
     })
 }
 
 export function getProductList() {    
-    return makeRequest('/product', {
+    return makeRequest('/books', {
         method: 'get',
     })
 }

@@ -18,7 +18,7 @@ const EditProductPage: React.FC = () => {
         getProductById(id as string)
           .then((response) => {
             response.map
-            setProduct(response);
+            setProduct(response.data);
             console.log(response)
           })
           .catch((error) => {
@@ -64,7 +64,7 @@ const EditProductPage: React.FC = () => {
             type="text"
             id="name"
             name="name"
-            value={product.name}
+            value={product.title}
             onChange={handleChange}
             className="border border-gray-300 rounded px-3 py-2 w-full"
           />
@@ -77,7 +77,7 @@ const EditProductPage: React.FC = () => {
             type="text"
             id="author"
             name="author"
-            value={product.author}
+            value={product.authors}
             onChange={handleChange}
             className="border border-gray-300 rounded px-3 py-2 w-full"
           />
@@ -90,7 +90,7 @@ const EditProductPage: React.FC = () => {
             type="text"
             id="img"
             name="img"
-            value={product.img}
+            value={product.image}
             onChange={handleChange}
             className="border border-gray-300 rounded px-3 py-2 w-full"
           />
