@@ -1,10 +1,22 @@
 import { FaUser, FaSearch } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import DropDownCart from './DropDownCart';
 import logo from '../assets/logo.png';
 
 
 const HeaderBar = () => {
+    const navigate = useNavigate();
+    const [keyword, setKeyWord] = useState<string>("");
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWord(e.target.value);
+    };
+
+    function handleSearch() {
+        navigate(`/search/${keyword}`)
+    }
+
 
     return (
         <header className="flex items-center justify-between py-4 px-6 bg-white shadow">
@@ -19,10 +31,13 @@ const HeaderBar = () => {
                 <div className="relative">
                     <input
                         type="text"
+                        name="search"
                         placeholder="Search"
+                        value={keyword}
+                        onChange={handleSearchChange}
                         className="w-full py-2 px-4 rounded-lg border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
                     />
-                    <button className="absolute inset-y-0 right-0 px-4 py-2 bg-blue-500 text-white font-semibold rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent">
+                    <button className="absolute inset-y-0 right-0 px-4 py-2 bg-blue-500 text-white font-semibold rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent" onClick={handleSearch}>
                         <FaSearch className="w-5 h-5" />
                     </button>
                 </div>
@@ -30,10 +45,10 @@ const HeaderBar = () => {
             <div className="flex items-center">
                 <div className='mr-10'>
                     <DropDownCart /></div>
-                    <NavLink to={"/profile"}>
-                <div className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10">
-                    <FaUser className="w-6 h-6" />
-                </div></NavLink>
+                <NavLink to={"/profile"}>
+                    <div className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10">
+                        <FaUser className="w-6 h-6" />
+                    </div></NavLink>
             </div>
         </header>
     );

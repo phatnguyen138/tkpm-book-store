@@ -3,12 +3,12 @@ import { Product as ProductType } from '../types/Products';
 import { getShopProductListByFilter } from '../lib/axios/products'
 import { useState, useEffect } from "react"
 
-function ProductListPage(): JSX.Element {
-  const { type, page } = useParams();
+function SearchBookList(): JSX.Element {
+  const { keyword, page } = useParams();
   var paging : number = page ? parseInt(page) - 1 : 0;;
   const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
   const [productList, setProductList] = useState<ProductType[]>([]);
-  const [genre, setGenre] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [offset, setOffset] = useState<number>(1);
   const limit: number = 20;
 
@@ -23,15 +23,15 @@ function ProductListPage(): JSX.Element {
   };
 
   useEffect(() => {
-    setGenre(type && type !== "tat-ca" ? type : "");
+    setTitle(keyword as string);
     paging = page ? parseInt(page) - 1 : 0;
     setOffset(paging * limit + 1);
-  }, [type, page]);
+  }, [keyword, page]);
 
   useEffect(() => {
     const filterOptions: Record<string, string | string[]> = {};
-    if (genre !== "") {
-      filterOptions.genre = genre;
+    if (title !== "") {
+      filterOptions.title = title;
     }
     // Add other filters as needed...
 
@@ -39,7 +39,7 @@ function ProductListPage(): JSX.Element {
     filterOptions.offset = offset.toString();
 
     fetchProductList(filterOptions, token as string);
-  }, [genre, offset, token]);
+  }, [title, offset, token]);
 
   return (
     <div>
@@ -59,7 +59,7 @@ function ProductListPage(): JSX.Element {
       <div className="flex justify-end mt-4">
         {offset > 1 && (
           <Link
-            to={`/list/${type}/${paging - 1}`}
+            to={`/list/${title}/${paging - 1}`}
             className="px-4 py-2 bg-gray-800 text-white rounded-md mr-2"
           >
             Previous
@@ -70,7 +70,7 @@ function ProductListPage(): JSX.Element {
         </span>
         {1 < 2 && (
           <Link
-            to={`/list/${type}/${paging + 1}`}
+            to={`/list/${title}/${paging + 1}`}
             className="px-4 py-2 bg-gray-800 text-white rounded-md"
           >
             Next
@@ -82,4 +82,4 @@ function ProductListPage(): JSX.Element {
 }
 
 
-export default ProductListPage;
+export default SearchBookList;
