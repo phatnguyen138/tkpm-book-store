@@ -70,4 +70,21 @@ After that, the server will be running on port 3000. You can also access it thro
 
 -   Check out order: [POST] /{order_id}/checkout (**Authentication and Authorization**)
 
+### Report
+
+**Inventory report**
+
+-   Get all inventory report: [GET] /report/inventory
+-   Get inventory report by id: [GET] /report/inventory/{inventory_id}
+-   Create inventory report: [POST] /report/inventory
+-   Update inventory report: [PUT] /report/inventory/{inventory_id}
+-   Delete inventory report: [DELETE] /report/inventory/{inventory_id}
+
+**Inventory report details**
+
+-   Get all inventory report details: [GET] /report/inventory/{inventory_id}/details
+-   Create inventory report detail: [POST] /report/inventory/{inventory_id}/details
+-   Update inventory report detail: [PUT] /report/inventory/{inventory_id}/details/{book_id}
+-   Delete inventory report detail: [DELETE] /report/inventory/{inventory_id}/details/{book_id}
+
 See the API documentation for more details [here](https://documenter.getpostman.com/view/24674805/2s93si1prs#96b01024-447a-4b23-8ca1-a9617caa0a3a).
