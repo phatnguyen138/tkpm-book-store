@@ -17,11 +17,16 @@ orderRoute
         verifyTokenAndAuthorization,
         orderController.createOrderItems
     )
+    .delete(
+        '/:id/items',
+        verifyTokenAndAuthorization,
+        orderController.removeAllItemsOrder
+    )
 
     .get('/', orderController.getOrders)
     .get('/:id', orderController.getOrderById)
     .post('/', verifyTokenAndAuthorization, orderController.createOrder)
     .put('/', verifyTokenAndAuthorization, orderController.updateOrder)
-    .delete('/:id', verifyTokenAndAuthorization, orderController.removeOrder);
+    .delete('/', verifyTokenAndAuthorization, orderController.removeOrder);
 
 module.exports = orderRoute;

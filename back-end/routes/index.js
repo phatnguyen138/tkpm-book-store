@@ -7,5 +7,5 @@ const billRoute = require('./bill.route');
 router.use('/users', userRoute);
 router.use('/books', bookRoute);
 router.use('/orders', orderRoute);
-router.use('/bills',billRoute);
+router.use('/bills', billRoute);
 module.exports = router;

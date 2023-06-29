@@ -7,54 +7,65 @@ const orderRoute = require('../routes/order.route');
 /* Orders Controller */
 
 const getOrders = async (req, res, next) => {
-    const orders = await orderModel.findAll();
-    for (const order of orders) {
+    try {
+        const orders = await orderModel.findAll();
+        for (const order of orders) {
+            const { fullname, email, address, phone } =
+                await userModel.findById(order.user_id);
+            order.user = { fullname, email, address, phone };
+        }
+        return res.status(200).json({
+            success: true,
+            data: {
+                orders
+            }
+        });
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const getOrderById = async (req, res, next) => {
+    try {
+        const order_id = req.params.id;
+        if (!order_id) return next(new Error(400, 'Missing fields'));
+        const order = await orderModel.findById(order_id);
+        if (!order) return next(new Error(400, 'Order not found'));
         const { fullname, email, address, phone } = await userModel.findById(
             order.user_id
         );
         order.user = { fullname, email, address, phone };
+        return res.status(200).json({
+            success: true,
+            data: order
+        });
+    } catch (error) {
+        return next(error);
     }
-    return res.status(200).json({
-        success: true,
-        data: {
-            orders
-        }
-    });
-};
-
-const getOrderById = async (req, res, next) => {
-    const order_id = req.params.id;
-    if (!order_id) return next(new Error(400, 'Missing fields'));
-    const order = await orderModel.findById(order_id);
-    if (!order) return next(new Error(400, 'User not found'));
-    const { fullname, email, address, phone } = await userModel.findById(
-        order.user_id
-    );
-    order.user = { fullname, email, address, phone };
-    return res.status(200).json({
-        success: true,
-        data: order
-    });
 };
 
 const createOrder = async (req, res, next) => {
-    const user_id = req.user_id;
-    let orders = await orderModel.findByUserId(user_id);
-    let order = null;
-    let FoundOrder = orders.find((ord) => ord.payment_status === 0);
-    if (!FoundOrder) {
-        order = await orderModel.create(user_id);
-    } else {
-        return next(new Error(404, 'Order is already exist'));
+    try {
+        const user_id = req.user_id;
+        let orders = await orderModel.findByUserId(user_id);
+        let order = null;
+        let FoundOrder = orders.find((ord) => ord.payment_status === 0);
+        if (!FoundOrder) {
+            order = await orderModel.create(user_id);
+        } else {
+            return next(new Error(404, 'Order is already exist'));
+        }
+        const { userId, fullname, email, address, phone } =
+            await userModel.findById(order.user_id);
+        order.user = { userId, fullname, email, address, phone };
+        delete order.user_id;
+        return res.status(201).json({
+            success: true,
+            data: order
+        });
+    } catch (error) {
+        return next(error);
     }
-    const { userId, fullname, email, address, phone } =
-        await userModel.findById(order.user_id);
-    order.user = { userId, fullname, email, address, phone };
-    delete order.user_id;
-    return res.status(201).json({
-        success: true,
-        data: order
-    });
 };
 
 const updateOrder = async (req, res, next) => {
@@ -72,14 +83,20 @@ const updateOrder = async (req, res, next) => {
 const removeOrder = async (req, res, next) => {
     try {
         const user_id = req.user_id;
-        const order_id = req.params.id;
         if (!user_id) return next(new Error(400, 'User not found'));
-        if (!order_id) return next(new Error(400, 'Order not found'));
         const orders = await orderModel.findByUserId(user_id);
-        await orderModel.remove(user_id, order_id);
-        return res.status(200).json({
-            success: true
-        });
+        const FoundOrder = orders.find((ord) => ord.payment_status === 0);
+        console.log('found order', FoundOrder);
+        if (!FoundOrder) return next(new Error(404, 'Order not found'));
+        else {
+            // delete items in order
+            await orderModel.removeOrderItems(FoundOrder.order_id);
+            // delete order
+            await orderModel.remove(user_id, FoundOrder.order_id);
+            return res.status(200).json({
+                success: true
+            });
+        }
     } catch (error) {
         return next(error);
     }
@@ -90,9 +107,10 @@ const checkoutOrder = async (req, res, next) => {
         const user_id = req.user_id;
         const order_id = req.params.id;
         const { address_shipping, phone_shipping } = req.body;
-        console.log('req body', { address_shipping, phone_shipping });
         if (!user_id) return next(new Error(400, 'User not found'));
         if (!order_id) return next(new Error(400, 'Order not found'));
+        const FoundOrder = await orderModel.findById(order_id);
+        if (!FoundOrder) return next(new Error(400, 'Order not found'));
         const order = await orderModel.checkout(
             address_shipping,
             phone_shipping,
@@ -111,68 +129,93 @@ const checkoutOrder = async (req, res, next) => {
 /* Order Items Model */
 
 const getOrderItems = async (req, res, next) => {
-    const user_id = req.user_id;
-    if (!user_id) return next(new Error(400, 'User not found'));
-    let orders = await orderModel.findByUserId(user_id);
-    let order = null;
-    if (!orders || orders.length === 0) {
-        order = await orderModel.create(user_id);
-        orders.push(order);
-    }
-    let FoundOrder = orders.find((ord) => ord.payment_status === 0);
-    if (!FoundOrder) {
-        order = await orderModel.create(user_id);
-        orders.push(order);
-    } else order = FoundOrder;
-    let items = await orderModel.findOrderItemsByOrderId(order.order_id);
-
-    const { userId, fullname, email, address, phone } =
-        await userModel.findById(order.user_id);
-    order.user = { userId, fullname, email, address, phone };
-    delete order.user_id;
-
-    for (const item of items) {
-        item.book = await bookModel.findBookById(item.book_id);
-        delete item.book_id;
-    }
-    return res.status(200).json({
-        success: true,
-        data: {
-            order: order,
-            items
+    try {
+        const user_id = req.user_id;
+        if (!user_id) return next(new Error(400, 'User not found'));
+        let orders = await orderModel.findByUserId(user_id);
+        let order = null;
+        // case 1: Order not found and create new order
+        if (!orders || orders.length === 0) {
+            order = await orderModel.create(user_id);
         }
-    });
+        let FoundOrder = orders.find((ord) => ord.payment_status === 0);
+        // case 2: Order is already exist and payment_status === 1
+        if (!FoundOrder) {
+            order = await orderModel.create(user_id);
+        } else order = FoundOrder; // case 3: Order is already exist and payment_status === 0
+        let items = await orderModel.findOrderItemsByOrderId(order.order_id);
+
+        const { userId, fullname, email, address, phone } =
+            await userModel.findById(order.user_id);
+        order.user = { userId, fullname, email, address, phone };
+        delete order.user_id;
+
+        for (const item of items) {
+            item.book = await bookModel.findBookById(item.book_id);
+            delete item.book_id;
+        }
+        return res.status(200).json({
+            success: true,
+            data: {
+                order: order,
+                items
+            }
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 const createOrderItems = async (req, res, next) => {
-    const user_id = req.user_id;
-    const orders = await orderModel.findByUserId(user_id);
-    let order = null;
-    let FoundOrder = orders.find((ord) => ord.payment_status === 0);
-    if (!FoundOrder) return next(new Error(400, 'Order not found'));
-    else order = FoundOrder;
-    const { book_id, quantity } = req.body;
+    try {
+        const user_id = req.user_id;
+        const orders = await orderModel.findByUserId(user_id);
+        let order = null;
+        let FoundOrder = orders.find((ord) => ord.payment_status === 0);
+        if (!FoundOrder) return next(new Error(400, 'Order not found'));
+        else order = FoundOrder;
+        const { book_id, quantity } = req.body;
 
-    // get item
-    const book = await bookModel.findBookById(book_id);
-    const item_price = book.price - book.price * book.discount;
+        // get item
+        const book = await bookModel.findBookById(book_id);
+        const item_price = book.price - book.price * book.discount;
 
-    // add item to order
-    const orderItem = await orderModel.createOrderItem(
-        order.order_id,
-        book_id,
-        quantity,
-        item_price
-    );
+        // add item to order
+        const orderItem = await orderModel.createOrderItem(
+            order.order_id,
+            book_id,
+            quantity,
+            item_price
+        );
 
-    // update total_amount in order
-    const total_amount = order.total_amount + item_price * quantity;
-    await orderModel.updateByOrderId(total_amount, user_id, order.order_id);
+        // update total_amount in order
+        const total_amount = order.total_amount + item_price * quantity;
+        await orderModel.updateByOrderId(total_amount, user_id, order.order_id);
 
-    return res.status(201).json({
-        success: true,
-        data: orderItem
-    });
+        return res.status(201).json({
+            success: true,
+            data: orderItem
+        });
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const removeAllItemsOrder = async (req, res, next) => {
+    try {
+        const user_id = req.user_id;
+        if (!user_id) return next(new Error(400, 'User not found'));
+        const order_id = req.params.id;
+        const order = await orderModel.findById(order_id);
+        if (!order) return next(new Error(400, 'Order not found'));
+        // delete items in order
+        await orderModel.removeOrderItems(order.order_id);
+        return res.status(200).json({
+            success: true
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 module.exports = {
@@ -182,6 +225,7 @@ module.exports = {
     createOrder,
     updateOrder,
     removeOrder,
+    removeAllItemsOrder,
     getOrderItems,
     createOrderItems
 };

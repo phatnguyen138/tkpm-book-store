@@ -1,5 +1,13 @@
 # Book Store API
 
+Configure the PostgreSQL database according to the format specified in the .env.example file.
+
+Installation all dependency packages
+
+```
+yarn install
+```
+
 How to run it ?
 
 ```
@@ -56,6 +64,7 @@ After that, the server will be running on port 3000. You can also access it thro
 
 -   Get all items in order: [GET] /items (**Authentication and Authorization**)
 -   Add item in order (create new order if order is not exist): [POST] /items (**Authentication and Authorization**)
+-   Delete all items in order: [DELETE] /orders/{order_id}/items (**Authentication and Authorization**)
 
 **Check out**
 
