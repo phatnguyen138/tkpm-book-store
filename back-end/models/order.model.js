@@ -62,6 +62,11 @@ const remove = async (user_id, order_id) => {
     return res;
 };
 
+const removeOrderUser = async (user_id) => {
+    const res = await db.none('DELETE FROM orders where user_id = $1', user_id);
+    return res;
+};
+
 const findAllOrderItems = async () => {
     const orderItems = await db.any(
         'SELECT * FROM order_items ORDER BY order_item_id ASC'
@@ -105,5 +110,6 @@ module.exports = {
     removeOrderItems,
     findAllOrderItems,
     findOrderItemsByOrderId,
-    createOrderItem
+    createOrderItem,
+    removeOrderUser
 };

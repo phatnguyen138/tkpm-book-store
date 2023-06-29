@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const orderModel = require('../models/order.model');
 const { encodeToken } = require('../helpers/auth');
 const { Error } = require('../helpers/error.helper');
 
@@ -131,11 +132,22 @@ const updateUser = async (req, res, next) => {
 };
 
 const removeUser = async (req, res, next) => {
-    const user_id = req.params.id;
-    await userModel.remove(user_id);
-    return res.status(200).json({
-        success: true
-    });
+    try {
+        const user_id = req.params.id;
+        const user = await userModel.findById(user_id);
+        if (!user) return next(new Error(400, 'User not found'));
+        const orders = await orderModel.findByUserId(user_id);
+        for (const order of orders) {
+            await orderModel.removeOrderItems(order.order_id);
+        }
+        await orderModel.removeOrderUser(user_id);
+        await userModel.remove(user_id);
+        return res.status(200).json({
+            success: true
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 const resetPassword = async (req, res, next) => {
