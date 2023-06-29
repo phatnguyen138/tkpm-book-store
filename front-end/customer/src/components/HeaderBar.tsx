@@ -8,6 +8,7 @@ import logo from '../assets/logo.png';
 const HeaderBar = () => {
     const navigate = useNavigate();
     const [keyword, setKeyWord] = useState<string>("");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyWord(e.target.value);
@@ -17,6 +18,14 @@ const HeaderBar = () => {
         navigate(`/search/${keyword}`)
     }
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prevState) => !prevState);
+      };
+
+      function logout (){
+        localStorage.clear();
+        navigate("/login");
+      }
 
     return (
         <header className="flex items-center justify-between py-4 px-6 bg-white shadow">
@@ -43,13 +52,32 @@ const HeaderBar = () => {
                 </div>
             </div>
             <div className="flex items-center">
-                <div className='mr-10'>
-                    <DropDownCart /></div>
-                <NavLink to={"/profile"}>
-                    <div className="text-gray-600 hover:text-gray-800 focus:outline-none mr-10">
-                        <FaUser className="w-6 h-6" />
-                    </div></NavLink>
-            </div>
+      <div className='mr-10'>
+        <DropDownCart />
+      </div>
+      <div
+        className={`relative ${isDropdownOpen ? 'z-10' : ''}`}
+        onClick={toggleDropdown}
+      >
+        <FaUser className="w-6 h-6 cursor-pointer text-gray-600 hover:text-gray-800 focus:outline-none mr-10" />
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
+            <NavLink
+              to="/profile"
+              className="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white"
+            >
+              Profile
+            </NavLink>
+            <button
+              className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-500 hover:text-white"
+              onClick={logout}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
         </header>
     );
 }

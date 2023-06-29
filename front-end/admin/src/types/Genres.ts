@@ -11,7 +11,6 @@ export type GenreInfo = {
 
 export type NewGenre  = {
     name: string
-
 }
 
 export type EachGenre = {

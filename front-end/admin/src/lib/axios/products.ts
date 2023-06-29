@@ -2,14 +2,14 @@ import { Product, NewProduct } from '../../types/Products';
 import { makeRequest } from "./makeRequest";
 
 
-export function getProductById(id : string, token: string) {
-    return makeRequest(`/books/${id}`,{
+export function getProductById(id: string, token: string) {
+    return makeRequest(`/books/${id}`, {
         method: 'get'
-        
+
     })
 }
 
-export function getProductList() {    
+export function getProductList() {
     return makeRequest('/books', {
         method: 'get',
     })
@@ -18,12 +18,12 @@ export function getProductList() {
 export function getShopProductList(token: string) {
     return makeRequest(`/seller/product`, {
         method: 'get',
-        headers: {'authorization': 'Bearer ' + token}
+        headers: { 'authorization': 'Bearer ' + token }
     })
 }
 
-export function getProductListByFilter(filterOptions: any[]) {    
-    return makeRequest(`/product/filter`,{
+export function getProductListByFilter(filterOptions: any[]) {
+    return makeRequest(`/product/filter`, {
         method: 'get',
         params: {
             options: filterOptions
@@ -38,11 +38,37 @@ export function updateProductStat(product: Product) {
     })
 }
 
-export function createNewProduct(product: NewProduct) {
+export function createNewProduct(product: NewProduct, token: string) {
     return makeRequest(`/books`, {
         method: 'post',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        },
         data: {
-            "title": product.title, "image": product.image, "price": product.price, "authors" : product.authors, "genres": product.genres, "quantity": "100", "discount": "0" 
+            "title": product.title, "image": product.image, "price": product.price, "authors": product.authors, "genres": product.genres, "quantity": product.quantity, "discount": "0"
         }
+    })
+}
+
+export function updateProductById(product: NewProduct, token: string, id: string) {
+    return makeRequest(`/books/${id}`, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        },
+        data: {
+            "title": product.title, "image": product.image, "price": product.price, "authors": product.authors, "genres": product.genres, "quantity": product.quantity, "discount": "0"
+        }
+    })
+}
+
+export function deleteBookById(id: string, token: string) {
+    return makeRequest(`/books/${id}`, {
+        method: 'delete',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
     })
 }

@@ -75,7 +75,7 @@ const Checkout: React.FC<CheckoutProps> = ({ order_id }) => {
       return state.cart.items.filter(item => item.selected)
     }))
     const authUser = useAppSelector(state => state.user)
-    const totalPrice = getCheckoutValue(checkoutItems)
+    const totalPrice = getCheckoutValue(checkoutItems).toFixed(2);
 
     function selectPaymentMethod(newMethod : PaymentMethod) {
       setPaymentMethod(prevMethod => {

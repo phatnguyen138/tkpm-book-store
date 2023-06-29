@@ -13,7 +13,8 @@ export type NewProduct = {
     authors: string,
     image: File | null,
     price: number,
-    genres: string
+    genres: string,
+    quantity: number
 }
 
 type OrderInfo = {

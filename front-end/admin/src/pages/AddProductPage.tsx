@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { NewProduct } from '../types/Products';
 import { GenreInfo } from '../types/Genres'
 import { Author } from '../types/Authors';
@@ -7,12 +8,16 @@ import { getAllAuthors } from '../lib/axios/authors';
 import { createNewProduct } from '../lib/axios/products';
 
 const AddProductPage: React.FC = () => {
+  const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
+  const [isBookCreated, setIsBookCreated] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [product, setProduct] = useState<NewProduct>({
     title: '',
     authors: '',
     image: null,
     price: 0,
     genres: '',
+    quantity: 0
   });
   // Handle genres select
   const [genreList, setGenreList] = useState<GenreInfo[]>([]);
@@ -36,26 +41,26 @@ const AddProductPage: React.FC = () => {
     fetchGenres();
   }, []);
 
-    // Handle author select
-    const [authorList, setAuthorList] = useState<Author[]>([]);
-    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
-    useEffect(() => {
-      async function fetchGenres() {
-        try {
-          const response = await getAllAuthors();
-          const { data } = response;
-          const mappedAuthors = data.map((authorData: any) => ({
-            id: authorData.author_id,
-            name: authorData.name,
-          })) as Author[];
-          setAuthorList(mappedAuthors);
-        } catch (error) {
-          console.log('Error fetching genres:', error);
-        }
+  // Handle author select
+  const [authorList, setAuthorList] = useState<Author[]>([]);
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+  useEffect(() => {
+    async function fetchGenres() {
+      try {
+        const response = await getAllAuthors();
+        const { data } = response;
+        const mappedAuthors = data.map((authorData: any) => ({
+          id: authorData.author_id,
+          name: authorData.name,
+        })) as Author[];
+        setAuthorList(mappedAuthors);
+      } catch (error) {
+        console.log('Error fetching genres:', error);
       }
-  
-      fetchGenres();
-    }, []);
+    }
+
+    fetchGenres();
+  }, []);
 
   // Handle forms
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +77,7 @@ const AddProductPage: React.FC = () => {
     const remainingSelectedGenres = selectedGenres.filter(
       (genre) => genre !== clickedOptionValue
     );
-  
+
     let updatedSelectedGenres;
     if (isOptionSelected && remainingSelectedGenres.length === 0) {
       // Prevent deselecting the last remaining option
@@ -82,9 +87,9 @@ const AddProductPage: React.FC = () => {
     } else {
       updatedSelectedGenres = [...selectedGenres, clickedOptionValue];
     }
-  
+
     setSelectedGenres(updatedSelectedGenres);
-  
+
     // Format the selected genres as a string
     const formattedGenres = updatedSelectedGenres.join(", ");
     setProduct((prevProduct) => ({
@@ -99,7 +104,7 @@ const AddProductPage: React.FC = () => {
     const remainingSelectedAuthors = selectedAuthors.filter(
       (author) => author !== clickedOptionValue
     );
-  
+
     let updatedSelectedAuthors;
     if (isOptionSelected && remainingSelectedAuthors.length === 0) {
       // Prevent deselecting the last remaining option
@@ -109,9 +114,9 @@ const AddProductPage: React.FC = () => {
     } else {
       updatedSelectedAuthors = [...selectedAuthors, clickedOptionValue];
     }
-  
+
     setSelectedAuthors(updatedSelectedAuthors);
-  
+
     // Format the selected genres as a string
     const formattedAuthors = updatedSelectedAuthors.join(", ");
     setProduct((prevProduct) => ({
@@ -131,18 +136,46 @@ const AddProductPage: React.FC = () => {
     }
   }
 
+  const [errors, setError] = useState<string>("");
   // Handle submit
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission, e.g., send data to the server
-    console.log(product);
-    createNewProduct(product);
+    try {
+      if (!product.title) {
+        throw new Error("Title is required.");
+      }
+      if (product.price <= 0) {
+        throw new Error("Price must be greater than zero.");
+      }
+      if (product.quantity <= 0) {
+        throw new Error("Quantity must be greater than zero.");
+      }
+      if (product.image === null) {
+        throw new Error("Please upload the cover!");
+      }
+      if (product.authors === "") {
+        throw new Error("Please choose at least 1 author!");
+      }
+      if (product.genres === "") {
+        throw new Error("Please choose at least 1 genre!");
+      }
+      console.log("Product:" + product);
+      await createNewProduct(product, token ? token : "");
+      setIsBookCreated(true);
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
+
+  function createSuccess () {
+    setIsBookCreated(false)
+    navigate("/edit-product");
+  }
 
   return (
     <div className="px-4 py-6">
       <h2 className="text-2xl font-semibold mb-4">Add Product</h2>
-      <form onSubmit={handleSubmit} className="max-w-md">
+      <form action='/profile' method='post' encType='multipart/form-data' onSubmit={handleSubmit} className="max-w-md">
         <div className="mb-4">
           <label htmlFor="name" className="block font-medium mb-1">
             Name:
@@ -179,9 +212,14 @@ const AddProductPage: React.FC = () => {
           <label htmlFor="img" className="block font-medium mb-1">
             Cover:
           </label>
-          <form action='/images' method='post' encType="multipart/form-data">
-              <input type="file" name="image" onChange={ handleImageChange }/>
-          </form>
+          <input type="file" name="image" onChange={handleImageChange} />
+          {product.image && (
+            <img
+              src={URL.createObjectURL(product.image)}
+              alt="Preview"
+              className="mt-2 w-20 h-20 object-cover rounded"
+            />
+          )}
         </div>
         <div className="mb-4">
           <label htmlFor="price" className="block font-medium mb-1">
@@ -192,6 +230,19 @@ const AddProductPage: React.FC = () => {
             id="price"
             name="price"
             value={product.price}
+            onChange={handleChange}
+            className="border border-gray-300 rounded px-3 py-2 w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="price" className="block font-medium mb-1">
+            Quantity:
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            value={product.quantity}
             onChange={handleChange}
             className="border border-gray-300 rounded px-3 py-2 w-full"
           />
@@ -215,10 +266,26 @@ const AddProductPage: React.FC = () => {
             ))}
           </select>
         </div>
+        {errors && (
+          <div className="text-red-500 mb-4">{errors}</div>
+        )}
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
           Thêm sản phẩm
         </button>
       </form>
+      {isBookCreated && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg">
+            <p>Book created</p>
+            <button
+              onClick={createSuccess}
+              className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
