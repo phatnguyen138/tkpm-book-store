@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { CartItem, Product } from '../../types/Products';
+import { CartItem} from '../../types/Products';
 import { 
     addCartItem,
     updateCartItemQuantity,
     deleteCartItem
 } from "../../lib/axios/cart";
 import {
-    saveOrder
+    
 } from "../../lib/axios/orders"
 
 const initialState : {items: CartItem[]} = {
@@ -50,12 +50,12 @@ export const deleteCartItemFromDB = createAsyncThunk(
     }
 )
 
-export const createNewOrderFromCartItem = createAsyncThunk(
-    'cart/orderCreated',
-    async (data: object, {dispatch}) => {
-        const res = await saveOrder(data).then(res => console.log(res))
-    }
-)
+// export const createNewOrderFromCartItem = createAsyncThunk(
+//     'cart/orderCreated',
+//     async (data: object, {dispatch}) => {
+//         const res = await saveOrder(data).then(res => console.log(res))
+//     }
+// )
 
 const cartSlice = createSlice({
     name: 'cart',

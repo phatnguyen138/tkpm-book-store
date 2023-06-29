@@ -17,13 +17,16 @@ import { useAppSelector, useAppDispatch } from "../hooks/hook";
 import { CartItem } from "../types/Products";
 import { useNavigate } from 'react-router-dom';
 import { getDiscountPrice, getCheckoutValue } from "../utils/product";
+import { createOrder } from "../lib/axios/orders";
+import { useDispatch } from 'react-redux';
+import { setOrderId } from "../redux/slices/orderId";
 
 type cartProps = {
     cartItems: CartItem[]
 }
 
 const Item = (props : CartItem) => {
-    const authUser = useAppSelector(state => state.user.authUser)
+    const authUser = useAppSelector(state => state.user)
     const [open, setOpen] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
@@ -55,7 +58,7 @@ const Item = (props : CartItem) => {
                   <button 
                     onClick={() => {
                         if(props.quantity > 1) {
-                            if (authUser.name !== "") {
+                            if (authUser.email !== "") {
                                 dispatch(updateCartItemQuantityToDB({
                                     option: 'decrease',
                                     body: {
@@ -67,7 +70,7 @@ const Item = (props : CartItem) => {
                                 dispatch(productReduced({product: props}))
                             }
                         } else {
-                            if (authUser.name !== "") {
+                            if (authUser.email !== "") {
                                 dispatch(deleteCartItemFromDB({itemId: props.book_id}))
                             } else{
                                 dispatch(productRemoved({product: props}))
@@ -81,7 +84,7 @@ const Item = (props : CartItem) => {
                   <input type="text" value={props.quantity} className="h-full w-[40px] text-center outline-none"/>
                   <button 
                     onClick={(e) => {
-                        if(authUser.name !== "") {
+                        if(authUser.email !== "") {
                             dispatch(updateCartItemQuantityToDB({
                                 option: 'increase',
                                 body: {
@@ -104,7 +107,7 @@ const Item = (props : CartItem) => {
                   </span>
                   <BsTrashFill 
                       onClick={() => {
-                        if(authUser.name !== "") {
+                        if(authUser.email !== "") {
                             dispatch(deleteCartItemFromDB({itemId: props.book_id}))
                         } else {
                             dispatch(productRemoved(props.book_id))
@@ -138,14 +141,26 @@ const ItemList = ({cartItems} : cartProps) => {
 }   
 
 const Cart = () => {
-    const cart = useAppSelector((state => state.cart))
-    const navigate = useNavigate()
-    const totalPrice = getCheckoutValue(cart.items)
+    const cart = useAppSelector((state => state.cart));
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const totalPrice = getCheckoutValue(cart.items);
+    const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
+
+    async function create() {
+        const response = await createOrder(token? token : "");// Replace with your actual createOrder function using axios
+        const orderId: string = response.data.order_id;
+        dispatch(setOrderId(orderId));
+    }
+
     function goToCheckoutPage() {
         if(totalPrice == 0) {
             alert("Bạn chưa chọn bất kỳ sản phẩm nào!!")
         }
-        else navigate('/checkout')
+        else {
+            create();
+            navigate('/checkout');
+        }
     }
 
     return (

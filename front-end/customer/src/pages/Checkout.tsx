@@ -1,47 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
     AiOutlineDollar 
 } from "react-icons/ai";
 import { FaMoneyBillWaveAlt } from 'react-icons/fa'
-import {
-    orderInfoUpdated,
-} from "../redux/slices/cart"
 import MoMoIcon from '../assets/momo_icon_square.png';
-import { useAppSelector, useAppDispatch } from "../hooks/hook";
-import { createNewOrderFromCartItem } from "../redux/slices/cart";
+import { useAppSelector} from "../hooks/hook";
+import {  } from "../redux/slices/cart";
 import { CartItem } from "../types/Products";
 import { useNavigate } from 'react-router-dom';
 import { getDiscountPrice, getCheckoutValue } from "../utils/product";
 import { PaymentMethod } from "../types/Payment";
-// import LocationSelectionForm from "../components/LocationSelectionForm";
+import { createOrderItem, checkoutOrder } from '../lib/axios/orders';
+import { selectOrderId } from "../redux/slices/orderId";
+import { useSelector } from "react-redux";
 
 type checkoutProps = {
   checkoutedItems: CartItem[]
 }
 
 const Item = (props : CartItem) => {
-    const [open, setOpen] = useState<boolean>(false)
-    const dispatch = useAppDispatch()
-
-    function toggleOpen() {
-        setOpen(prev => !prev)
-    }
-
-    function updateLocation(province: string, district: string, ward: string) {
-      const location = `  ${ward},  ${district}, ${province}`
-      dispatch(orderInfoUpdated({product: props.product, orderInfo: {...props.orderInfo, location: location}}))
-    }
-
     return(
         <div className="relative flex items-center flex-col justify-between w-full my-2 border border-slate-300 px-2 py-2">
-            {/* {open && <LocationSelectionForm closeForm={toggleOpen} updateLocation={updateLocation}/>} */}
-            {/* <div className="absolute top-2 right-2 flex items-center h-[20px] cursor-pointer" onClick={() => {toggleOpen()}}>
-              <span><HiOutlineLocationMarker className="text-sky-600 w-[20px] h-[20px]"/> </span>
-              {!props.orderInfo?.location 
-              ? <span className="italic font-medium text-slate-400">Chọn địa chỉ</span> 
-              : <span className="italic font-medium text-sky-600">{props.orderInfo?.location}</span>
-              }
-            </div> */}
             <div className="grid grid-cols-checkout items-center gap-1">
                 <div className="w-[120px] h-[150px] rounded-md overflow-hidden border border-gray-200">
                     <img 
@@ -86,23 +65,32 @@ const ItemList = ({checkoutedItems} : checkoutProps) => {
 const Checkout = () => {
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(undefined);
     const [address,setAddress] = useState<string>("");
+    const [phone,setPhone] = useState<string>("");
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
+    const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
+    const order_id = useSelector(selectOrderId)? useSelector(selectOrderId) : "";
     const checkoutItems = useAppSelector((state => {
       return state.cart.items.filter(item => item.selected)
     }))
     const authUser = useAppSelector(state => state.user)
     const totalPrice = getCheckoutValue(checkoutItems)
 
-    function anyItemLocationIncluded(items : CartItem[]) {
-      return items.some(item => item.orderInfo.location === "")
-    }
-
     function selectPaymentMethod(newMethod : PaymentMethod) {
       setPaymentMethod(prevMethod => {
         if(prevMethod === newMethod) return undefined
         return newMethod
       })
+    }
+
+    async function createItem() {
+      const createOrderItemPromises = checkoutItems.map((item) =>
+        createOrderItem(token ? token : "", item.book_id, item.quantity.toString())
+      );
+      await Promise.all(createOrderItemPromises);
+    }
+    
+    async function checkout() {
+      await checkoutOrder(token ? token : "", order_id ? order_id : "", address, phone);
     }
 
     function handleCheckout(e : React.FormEvent<HTMLFormElement>) {
@@ -123,12 +111,12 @@ const Checkout = () => {
           alert("Tính năng đang trong quá trình phát triển, vui lòng chọn hình thức thanh toán khác!")
         }
         if(paymentMethod == "Direct") {
-            dispatch(createNewOrderFromCartItem({items: checkoutItems, userId: authUser.email}))
-            alert("Đặt hàng thành công!!")
+            createItem();
+            checkout();
+            alert("Đặt hàng thành công!!");
             navigate("/")
             window.location.reload();
         }
-
     }
 
     return (
@@ -145,7 +133,7 @@ const Checkout = () => {
             <div className="mr-auto mt-2 w-3/5">
               <span className="text-base font-semibold">Số điện thoại:</span>
               <textarea className="w-full h-[50px] p-2 border resize-none font-medium text-sm" 
-                onBlur={(e) => setAddress(e.target.value)}
+                onBlur={(e) => setPhone(e.target.value)}
               >
               </textarea>
             </div>
