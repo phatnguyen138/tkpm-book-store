@@ -1,19 +1,24 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 
 const api = axios.create({
     baseURL: 'http://localhost:3000/api/v1',
     withCredentials: true,
-})
-
-api.interceptors.request.use((config) => {
+  });
+  
+  api.interceptors.request.use((config) => {
     console.log('Request:', config);
     return config;
   });
-
-export function makeRequest(url : string, options : any) {
+  
+  api.interceptors.response.use((response) => {
+    console.log('Response:', response.data);
+    return response;
+  });
+  
+  export function makeRequest(url: string, options: any) {
     return api(url, options)
-        .then(res => res.data)
-        .catch(error => {            
-            return Promise.reject(error?.response?.status)
-        })
-}
+      .then((res: AxiosResponse) => res.data)
+      .catch((error) => {
+        return Promise.reject(error?.response?.status);
+      });
+  }

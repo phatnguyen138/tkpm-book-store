@@ -16,11 +16,10 @@ import { BsTrashFill } from "react-icons/bs";
 import { useAppSelector, useAppDispatch } from "../hooks/hook";
 import { CartItem } from "../types/Products";
 import { useNavigate } from 'react-router-dom';
-import { getDiscountPrice, getCheckoutValue } from "../utils/product";
+import { getCheckoutValue } from "../utils/product";
 import { createOrder, deleteOrderItems } from "../lib/axios/orders";
 import { useDispatch } from 'react-redux';
 import { setOrderId } from "../redux/slices/orderId";
-import { AxiosError } from "axios";
 
 type cartProps = {
     cartItems: CartItem[]
@@ -145,7 +144,7 @@ const Cart = () => {
     const cart = useAppSelector((state => state.cart));
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const totalPrice = getCheckoutValue(cart.items);
+    const totalPrice = getCheckoutValue(cart.items).toFixed(2);
     const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
 
     async function create() {
@@ -162,7 +161,7 @@ const Cart = () => {
     }
 
     function goToCheckoutPage() {
-        if (totalPrice == 0) {
+        if (parseInt(totalPrice) == 0) {
             alert("Bạn chưa chọn bất kỳ sản phẩm nào!!")
         }
         else {

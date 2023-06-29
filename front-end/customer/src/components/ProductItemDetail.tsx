@@ -4,7 +4,7 @@ import { BsCartPlus } from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
 import { CartItem, Product } from '../types/Products.js'
 import { productAdded } from '../redux/slices/cart.js'
-import { addCartItemToDB, updateCartItemQuantityToDB } from '../redux/slices/cart'
+import { updateCartItemQuantityToDB } from '../redux/slices/cart'
 import { useAppSelector, useAppDispatch } from '../hooks/hook'
 import { getProductById } from '../lib/axios/products'
 
@@ -20,7 +20,7 @@ const ProductItemDetail = () => {
         console.log("cartItems: " + cartItems);
         const cartItem = cartItems.find(item => item.product?.book_id === productId)
         console.log("cartItem: " + cartItem)
-        return cartItem ? cartItem.book_id : undefined;
+        return cartItem ? cartItem.item_id : undefined;
     }
 
     async function addToCart(product: Product | undefined, quantity: number, selected: boolean = false) {
@@ -71,7 +71,7 @@ const ProductItemDetail = () => {
             </div>
             <div className="px-3 py-4 border-l w-[550px]">
                 <h4 className="font-semibold text-xl">{itemDetail?.title}</h4>
-                <div><span className='italic font-semibold'>Tác giả:</span> <span className='font-semibold'>{itemDetail?.authors}</span></div>
+                <div><span className='italic font-semibold'>Authors:</span> <span className='font-semibold'>{itemDetail?.authors}</span></div>
                 <div className="flex items-center gap-2.5">
                     <span className='flex'>
                         <AiFillStar className="text-amber-300" />
@@ -86,6 +86,7 @@ const ProductItemDetail = () => {
                 </div>
                 <div>
                     <div className='my-3 w-full h-[1px] bg-gray-200'></div>
+                    <span className='italic font-semibold'>{"Price:    "}</span> <span className=''>{itemDetail?.price + " $"}</span>
                     <div className='my-3 w-full h-[0.5px] bg-gray-200'></div>
 
                     <div className='my-2'>

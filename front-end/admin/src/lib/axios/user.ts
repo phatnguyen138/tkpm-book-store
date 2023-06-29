@@ -15,7 +15,19 @@ export function registerUser(email: string, password: string, fullName: string, 
         '/users/signup',
         {
             method: 'POST',
-            data: {email: email, password: password, fullname: fullName, address: address}
+            data: {email: email, password: password, fullname: fullName, address: address, "role_id": 1}
+        }
+    );
+}
+
+export function getAllUsers(token: string){
+    return makeRequest(
+        '/users',
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
         }
     );
 }
