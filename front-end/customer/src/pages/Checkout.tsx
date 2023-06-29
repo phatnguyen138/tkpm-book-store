@@ -11,8 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { getDiscountPrice, getCheckoutValue } from "../utils/product";
 import { PaymentMethod } from "../types/Payment";
 import { createOrderItem, checkoutOrder } from '../lib/axios/orders';
-import { selectOrderId } from "../redux/slices/orderId";
-import { useSelector } from "react-redux";
 
 type checkoutProps = {
   checkoutedItems: CartItem[]
@@ -36,7 +34,7 @@ const Item = (props : CartItem) => {
                 </div>
                 <div className="flex items-center">
                   <span className="mr-2 text-sky-600 font-semibold ">
-                      {getDiscountPrice(props.product.price, 0, props.quantity, props.appliedCouponValue)}đ
+                      {props.product.price}đ
                   </span>
                   <span className="font-normal text-slate-300 line-through">{props.product.price*props.quantity}đ</span>
                 </div>
@@ -62,13 +60,17 @@ const ItemList = ({checkoutedItems} : checkoutProps) => {
     )
 }   
 
-const Checkout = () => {
+interface CheckoutProps {
+  order_id: string; // Adjust the type based on your actual usage
+}
+
+
+const Checkout: React.FC<CheckoutProps> = ({ order_id }) => {
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(undefined);
     const [address,setAddress] = useState<string>("");
     const [phone,setPhone] = useState<string>("");
     const navigate = useNavigate();
     const token = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : "";
-    const order_id = useSelector(selectOrderId)? useSelector(selectOrderId) : "";
     const checkoutItems = useAppSelector((state => {
       return state.cart.items.filter(item => item.selected)
     }))
@@ -84,9 +86,13 @@ const Checkout = () => {
 
     async function createItem() {
       const createOrderItemPromises = checkoutItems.map((item) =>
-        createOrderItem(token ? token : "", item.book_id, item.quantity.toString())
+        createOrderItem(token ? token : "", parseInt(item.product.book_id), item.quantity)
       );
-      await Promise.all(createOrderItemPromises);
+      checkoutItems.map((item) => {
+        console.log(item.product.book_id);
+      }) 
+      await console.log(Promise.all(createOrderItemPromises));
+      await checkoutOrder(token ? token : "", order_id ? order_id : "", address, phone);
     }
     
     async function checkout() {
@@ -112,7 +118,6 @@ const Checkout = () => {
         }
         if(paymentMethod == "Direct") {
             createItem();
-            checkout();
             alert("Đặt hàng thành công!!");
             navigate("/")
             window.location.reload();

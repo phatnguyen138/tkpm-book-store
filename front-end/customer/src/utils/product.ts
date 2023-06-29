@@ -13,7 +13,7 @@ export function formatCategoryTitle(title: string) {
 export function getCheckoutValue(items: CartItem[]) {
     return items.reduce((prevPrice, item) => {
         return item.selected 
-            ? prevPrice + getDiscountPrice(item.product.price, 0, item.quantity, item.appliedCouponValue) 
+            ? prevPrice + item.product.price
             : prevPrice
     }, 0)
 }

@@ -16,16 +16,10 @@ export type NewProduct = {
     genres: string[]
 }
 
-type OrderInfo = {
-    note: string,
-    location: string
-}
-
 export type CartItem = {
-    book_id : string,
+    item_id : string,
     selected: boolean,
     quantity: number,
     product: Product
     appliedCouponValue: number
-    orderInfo: OrderInfo
 }

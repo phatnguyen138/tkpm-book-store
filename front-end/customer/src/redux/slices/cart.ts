@@ -33,7 +33,7 @@ export const updateCartItemQuantityToDB = createAsyncThunk(
         dispatch(productAdded({
             product: res.product, 
             quantity: res.quantity, 
-            itemId: res.id
+            book_id: res.book_id
         }))
         return res    
     }
@@ -64,14 +64,14 @@ const cartSlice = createSlice({
         productAdded: (state, action) => {
             console.log("payload: " + action.payload)
             const itemId = state.items.findIndex(
-                (item) => item.product.book_id === action.payload.product.product_id
+                (item) => item.product.book_id === action.payload.product.book_id
               );
             if(itemId >= 0) {                                
                 console.log(action.payload.quantity);
                 state.items[itemId].quantity += action.payload.quantity
             } else{                
                 const newItem = {
-                    book_id: action.payload.itemId ? action.payload.itemId : "default id", 
+                    item_id: action.payload.item_id ? action.payload.item_id : "default id", 
                     product: action.payload.product, 
                     quantity: action.payload.quantity, 
                     selected: false,

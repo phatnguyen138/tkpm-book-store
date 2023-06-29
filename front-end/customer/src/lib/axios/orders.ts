@@ -7,7 +7,7 @@ export async function createOrder(token: string) {
     })
 }
 
-export async function createOrderItem(token: string, book_id: string, quantity: string) {
+export async function createOrderItem(token: string, book_id: number, quantity: number) {
     return makeRequest('/orders/items', {
         method: 'post',
         headers: {'authorization': 'Bearer ' + token},
@@ -25,5 +25,12 @@ export async function checkoutOrder(token: string, order_id: string, address: st
             "address_shipping": address,
             "phone_shipping": phone
         }
+    })
+}
+
+export async function deleteOrderItems(token: string, order_id: string) {
+    return makeRequest(`orders/${order_id}/items`, {
+        method: 'delete',
+        headers: {'authorization': 'Bearer ' + token}
     })
 }
