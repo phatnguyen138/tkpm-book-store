@@ -25,7 +25,7 @@ export function getUserInfo(token: string){
         '/users/profile',
         {
             method: 'get',
-            headers: {'authorization': 'Bearer ' + token},
+            headers: {'Authorization': 'Bearer ' + token},
         }
     );
 }
@@ -35,7 +35,10 @@ export function updateUserProfile(token: string, id: string, fullname: string,em
         `/users/update/${id}`,
         {
             method: 'put',
-            headers: {'authorization': 'Bearer ' + token},
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            },
             data: {
                 "fullname": fullname, email: email, avatar: avatar, address: address, phone: phone
             }

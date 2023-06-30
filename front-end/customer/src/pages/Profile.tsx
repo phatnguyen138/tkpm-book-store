@@ -14,7 +14,6 @@ const Profile = () => {
   const fetchProduct = async () => {
     try {
       const response = await getUserInfo(token as string);
-      console.log(response.data)
       setAuthuser(response.data);
     } catch (error) {
       console.log("Error loading item detail");
