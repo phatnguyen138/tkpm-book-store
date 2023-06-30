@@ -9,6 +9,7 @@ import AddAuthor from './AddAuthor';
 import ViewGenresPage from './ViewGenresPage';
 import ViewAuthorsPage from './ViewAuthorsPage';
 import ViewUserList from './ViewUsersList';
+import ViewOrders from './ViewOrder';
 
 const MainPage: React.FC = () => {
     return (
@@ -32,6 +33,7 @@ const MainPage: React.FC = () => {
                         <Route path='/edit-genre' element={<ViewGenresPage/>}/>
                         <Route path='/edit-author' element={<ViewAuthorsPage/>}/>
                         <Route path='/view-users' element={<ViewUserList/>}/>
+                        <Route path='/view-orders' element={<ViewOrders/>}/>
                     </Routes>
                 </div>
             </div>

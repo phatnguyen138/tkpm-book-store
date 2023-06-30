@@ -69,7 +69,7 @@ const HeaderBar = () => {
               Profile
             </NavLink>
             <button
-              className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-500 hover:text-white"
+              className="block w-full px-4 py-2 text-left text-red-500 hover:bg-blue-500 hover:text-white"
               onClick={logout}
             >
               Logout

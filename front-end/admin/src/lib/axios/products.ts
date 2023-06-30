@@ -1,8 +1,8 @@
-import { Product, NewProduct } from '../../types/Products';
+import { NewProduct } from '../../types/Products';
 import { makeRequest } from "./makeRequest";
 
 
-export function getProductById(id: string, token: string) {
+export function getProductById(id: string) {
     return makeRequest(`/books/${id}`, {
         method: 'get'
 
@@ -12,29 +12,6 @@ export function getProductById(id: string, token: string) {
 export function getProductList() {
     return makeRequest('/books', {
         method: 'get',
-    })
-}
-
-export function getShopProductList(token: string) {
-    return makeRequest(`/seller/product`, {
-        method: 'get',
-        headers: { 'authorization': 'Bearer ' + token }
-    })
-}
-
-export function getProductListByFilter(filterOptions: any[]) {
-    return makeRequest(`/product/filter`, {
-        method: 'get',
-        params: {
-            options: filterOptions
-        }
-    })
-}
-
-export function updateProductStat(product: Product) {
-    return makeRequest(`/seller/product/update`, {
-        method: 'post',
-        data: product
     })
 }
 
