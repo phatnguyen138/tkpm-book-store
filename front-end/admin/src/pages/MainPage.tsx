@@ -10,6 +10,9 @@ import ViewGenresPage from './ViewGenresPage';
 import ViewAuthorsPage from './ViewAuthorsPage';
 import ViewUserList from './ViewUsersList';
 import ViewOrders from './ViewOrder';
+import ViewReportPage from './ViewReports';
+import AddReportPage from './AddReportPage';
+import ViewReportDetail from './ViewReportDetail';
 
 const MainPage: React.FC = () => {
     return (
@@ -34,6 +37,9 @@ const MainPage: React.FC = () => {
                         <Route path='/edit-author' element={<ViewAuthorsPage/>}/>
                         <Route path='/view-users' element={<ViewUserList/>}/>
                         <Route path='/view-orders' element={<ViewOrders/>}/>
+                        <Route path='/view-reports' element={<ViewReportPage/>}/>
+                        <Route path='/add-report' element={<AddReportPage/>}/>
+                        <Route path='/report-detail/:id' element={<ViewReportDetail/>}/>
                     </Routes>
                 </div>
             </div>

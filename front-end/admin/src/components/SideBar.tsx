@@ -9,9 +9,8 @@ const Sidebar: React.FC = () => {
       <ul className="py-4">
         <li>
           <div
-            className={`block px-4 py-3 ${
-              location.pathname.includes('product') ? 'bg-blue-600' : ''
-            }`}
+            className={`block px-4 py-3 ${location.pathname.includes('product') ? 'bg-blue-600' : ''
+              }`}
           >
             Product
           </div>
@@ -19,9 +18,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/add-product"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/add-product' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/add-product' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Add Product
               </Link>
@@ -29,9 +27,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/edit-product"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/edit-product' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/edit-product' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Edit Product
               </Link>
@@ -40,9 +37,8 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 ${
-              location.pathname.includes('genre') ? 'bg-blue-600' : ''
-            }`}
+            className={`block px-4 py-3 ${location.pathname.includes('genre') ? 'bg-blue-600' : ''
+              }`}
           >
             Genre
           </div>
@@ -50,9 +46,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/add-genre"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/add-genre' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/add-genre' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Add Genre
               </Link>
@@ -60,9 +55,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/edit-genre"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/edit-genre' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/edit-genre' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Edit Genre
               </Link>
@@ -71,9 +65,8 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3${
-              location.pathname.includes('author') ? 'bg-blue-600' : ''
-            }`}
+            className={`block px-4 py-3${location.pathname.includes('author') ? 'bg-blue-600' : ''
+              }`}
           >
             Author
           </div>
@@ -81,9 +74,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/add-author"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/add-author' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/add-author' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Add Author
               </Link>
@@ -91,9 +83,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/edit-author"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/edit-author' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/edit-author' ? 'bg-blue-600' : ''
+                  }`}
               >
                 Edit Author
               </Link>
@@ -102,9 +93,8 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 ${
-              location.pathname.includes('order') ? 'bg-blue-600' : ''
-            }`}
+            className={`block px-4 py-3 ${location.pathname.includes('order') ? 'bg-blue-600' : ''
+              }`}
           >
             Order
           </div>
@@ -112,9 +102,8 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/view-orders"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/view-orders' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/view-orders' ? 'bg-blue-600' : ''
+                  }`}
               >
                 View Order
               </Link>
@@ -123,9 +112,8 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 ${
-              location.pathname.includes('users') ? 'bg-blue-600' : ''
-            }`}
+            className={`block px-4 py-3 ${location.pathname.includes('users') ? 'bg-blue-600' : ''
+              }`}
           >
             Users
           </div>
@@ -133,11 +121,29 @@ const Sidebar: React.FC = () => {
             <li>
               <Link
                 to="/view-users"
-                className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/view-users' ? 'bg-blue-600' : ''
-                }`}
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/view-users' ? 'bg-blue-600' : ''
+                  }`}
               >
                 View Users
+              </Link>
+            </li>
+          </ul>
+        </li>
+                <li>
+          <div
+            className={`block px-4 py-3 ${location.pathname.includes('reports') ? 'bg-blue-600' : ''
+              }`}
+          >
+            Report
+          </div>
+          <ul className="pl-4">
+            <li>
+              <Link
+                to="/view-reports"
+                className={`block px-4 py-3 hover:bg-blue-600 ${location.pathname === '/view-reports' ? 'bg-blue-600' : ''
+                  }`}
+              >
+                View Report
               </Link>
             </li>
           </ul>
