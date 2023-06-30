@@ -35,7 +35,7 @@ const ViewProductList: React.FC = () => {
 
   return (
     <div className="px-4 py-6">
-      <h2 className="text-2xl font-semibold mb-4">Book List</h2>
+      <h2 className="text-2xl font-semibold mb-4">Product List</h2>
 
       <table className="w-full border-collapse">
         <thead>

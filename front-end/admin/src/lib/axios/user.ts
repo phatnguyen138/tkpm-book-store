@@ -31,3 +31,15 @@ export function getAllUsers(token: string){
         }
     );
 }
+
+export function deleteUserById(token: string, id : number){
+    return makeRequest(
+        `/users/delete/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        }
+    );
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { UserInfo } from '../types/User';
 import { getAllUsers } from '../lib/axios/user';
+import { deleteUserById } from '../lib/axios/user';
 
 
 const ViewUserList: React.FC = () => {
@@ -25,7 +25,7 @@ const ViewUserList: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-    //   await deleteBookById(id, token? token : "");
+      await deleteUserById(token? token : "", id);
       fetchProductList(); // Refresh the product list after successful deletion
     } catch (error) {
       console.error('Error deleting book:', error);
@@ -34,7 +34,7 @@ const ViewUserList: React.FC = () => {
 
   return (
     <div className="px-4 py-6">
-      <h2 className="text-2xl font-semibold mb-4">Book List</h2>
+      <h2 className="text-2xl font-semibold mb-4">User List</h2>
 
       <table className="w-full border-collapse">
         <thead>

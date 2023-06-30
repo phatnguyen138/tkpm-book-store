@@ -21,7 +21,7 @@ const Header: React.FC = () => {
       {/* Logo */}
       <Link to="/" className="flex items-center">
         <img src={logo} alt="Logo" className="h-8 mr-2" />
-        <span className="text-lg font-bold">Your Logo</span>
+        <span className="text-lg font-bold">Book Store</span>
       </Link>
 
       {/* Admin Dropdown */}

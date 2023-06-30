@@ -31,7 +31,7 @@ const ViewReportPage: React.FC = () => {
     return (
         <div className="px-4 py-6">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Book List</h2>
+                <h2 className="text-2xl font-semibold">Report List</h2>
                 <Link to="/add-report" className="bg-blue-500 text-white py-2 px-4 rounded">
                     Create Report
                 </Link>
