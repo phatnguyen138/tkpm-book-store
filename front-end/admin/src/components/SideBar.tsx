@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
       <ul className="py-4">
         <li>
           <div
-            className={`block px-4 py-3 hover:bg-blue-600 ${
+            className={`block px-4 py-3 ${
               location.pathname.includes('product') ? 'bg-blue-600' : ''
             }`}
           >
@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 hover:bg-blue-600 ${
+            className={`block px-4 py-3 ${
               location.pathname.includes('genre') ? 'bg-blue-600' : ''
             }`}
           >
@@ -71,7 +71,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 hover:bg-blue-600 ${
+            className={`block px-4 py-3${
               location.pathname.includes('author') ? 'bg-blue-600' : ''
             }`}
           >
@@ -102,7 +102,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 hover:bg-blue-600 ${
+            className={`block px-4 py-3 ${
               location.pathname.includes('order') ? 'bg-blue-600' : ''
             }`}
           >
@@ -111,9 +111,9 @@ const Sidebar: React.FC = () => {
           <ul className="pl-4">
             <li>
               <Link
-                to="/view-order"
+                to="/view-orders"
                 className={`block px-4 py-3 hover:bg-blue-600 ${
-                  location.pathname === '/view-order' ? 'bg-blue-600' : ''
+                  location.pathname === '/view-orders' ? 'bg-blue-600' : ''
                 }`}
               >
                 View Order
@@ -123,7 +123,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li>
           <div
-            className={`block px-4 py-3 hover:bg-blue-600 ${
+            className={`block px-4 py-3 ${
               location.pathname.includes('users') ? 'bg-blue-600' : ''
             }`}
           >
