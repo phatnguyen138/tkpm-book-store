@@ -44,8 +44,8 @@ const checkout = async (
     order_id
 ) => {
     const order = await db.one(
-        `UPDATE orders SET payment_status = 1, address_shipping = $1, phone_shipping = $2 WHERE user_id = ${user_id} AND order_id = ${order_id} RETURNING *`,
-        [address_shipping, phone_shipping]
+        `UPDATE orders SET payment_status = 1, address_shipping = $1, phone_shipping = $2 WHERE user_id = $3 AND order_id = $4 RETURNING *`,
+        [address_shipping, phone_shipping, user_id, order_id]
     );
     return order;
 };

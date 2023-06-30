@@ -13,6 +13,14 @@ const getOrders = async (req, res, next) => {
             const { fullname, email, address, phone } =
                 await userModel.findById(order.user_id);
             order.user = { fullname, email, address, phone };
+            const items = await orderModel.findOrderItemsByOrderId(
+                order.order_id
+            );
+            for (const item of items) {
+                const book = await bookModel.findBookById(item.book_id);
+                item.book = book;
+            }
+            order.items = items;
         }
         return res.status(200).json({
             success: true,
@@ -111,6 +119,23 @@ const checkoutOrder = async (req, res, next) => {
         if (!order_id) return next(new Error(400, 'Order not found'));
         const FoundOrder = await orderModel.findById(order_id);
         if (!FoundOrder) return next(new Error(400, 'Order not found'));
+        // console.log('found order', FoundOrder);
+        const items = await orderModel.findOrderItemsByOrderId(order_id);
+        // update quantity of items in order
+        for (const item of items) {
+            const book = await bookModel.findBookById(item.book_id);
+            console.log('book', book);
+            let new_quantity = book.quantity - item.quantity;
+            console.log('new quantity', new_quantity);
+            const new_book = await bookModel.updateBookById(
+                book.title,
+                book.image,
+                book.price,
+                new_quantity,
+                book.discount,
+                item.book_id
+            );
+        }
         const order = await orderModel.checkout(
             address_shipping,
             phone_shipping,
@@ -137,12 +162,13 @@ const getOrderItems = async (req, res, next) => {
         // case 1: Order not found and create new order
         if (!orders || orders.length === 0) {
             order = await orderModel.create(user_id);
+        } else {
+            let FoundOrder = orders.find((ord) => ord.payment_status === 0);
+            // case 2: Order is already exist and payment_status === 1
+            if (!FoundOrder) {
+                order = await orderModel.create(user_id);
+            } else order = FoundOrder; // case 3: Order is already exist and payment_status === 0
         }
-        let FoundOrder = orders.find((ord) => ord.payment_status === 0);
-        // case 2: Order is already exist and payment_status === 1
-        if (!FoundOrder) {
-            order = await orderModel.create(user_id);
-        } else order = FoundOrder; // case 3: Order is already exist and payment_status === 0
         let items = await orderModel.findOrderItemsByOrderId(order.order_id);
 
         const { userId, fullname, email, address, phone } =
