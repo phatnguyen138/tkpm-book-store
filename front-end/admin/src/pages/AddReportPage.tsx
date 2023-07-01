@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllOrders } from '../lib/axios/orders';
 import { createReport, createReportDetail } from '../lib/axios/Report';
@@ -11,7 +11,7 @@ const AddReportPage: React.FC = () => {
     const [endDate, setEndDate] = useState('');
     const [orders, setOrders] = useState([]);
     const [reportId, setReportId] = useState<number | undefined>();
-
+    const isAddReportCalled = useRef(false);
     useEffect(() => {
         fetchOrders();
     }, []);
@@ -29,6 +29,7 @@ const AddReportPage: React.FC = () => {
 
     useEffect(() => {
         async function addReport() {
+
             try {
                 const res = await createReport(token ? token : "");
                 const { data } = res;
@@ -38,8 +39,14 @@ const AddReportPage: React.FC = () => {
             } catch (error: any) {
                 throw new Error(error.message);
             }
+
+
         }
-        addReport();
+        if(!isAddReportCalled.current)
+        {   
+            isAddReportCalled.current = true;
+            addReport();
+        }
     }, []);
 
     const handleNoteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
