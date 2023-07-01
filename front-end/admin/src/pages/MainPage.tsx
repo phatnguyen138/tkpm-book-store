@@ -13,6 +13,7 @@ import ViewOrders from './ViewOrder';
 import ViewReportPage from './ViewReports';
 import AddReportPage from './AddReportPage';
 import ViewReportDetail from './ViewReportDetail';
+import ViewOrderDetail from './ViewOrderDetail';
 
 const MainPage: React.FC = () => {
     return (
@@ -40,6 +41,7 @@ const MainPage: React.FC = () => {
                         <Route path='/view-reports' element={<ViewReportPage/>}/>
                         <Route path='/add-report' element={<AddReportPage/>}/>
                         <Route path='/report-detail/:id' element={<ViewReportDetail/>}/>
+                        <Route path='/order-detail/:id' element={<ViewOrderDetail/>}/>
                     </Routes>
                 </div>
             </div>

@@ -5,3 +5,10 @@ export function getAllOrders() {
         method: 'get'
     })
 }
+
+export async function getOrderById(token: string, order_id: string) {
+    return makeRequest(`orders/${order_id}`, {
+        method: 'get',
+        headers: {'authorization': 'Bearer ' + token}
+    })
+}

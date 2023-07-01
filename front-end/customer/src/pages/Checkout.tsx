@@ -8,7 +8,7 @@ import { useAppSelector} from "../hooks/hook";
 import {  } from "../redux/slices/cart";
 import { CartItem } from "../types/Products";
 import { useNavigate } from 'react-router-dom';
-import { getDiscountPrice, getCheckoutValue } from "../utils/product";
+import { getCheckoutValue } from "../utils/product";
 import { PaymentMethod } from "../types/Payment";
 import { createOrderItem, checkoutOrder } from '../lib/axios/orders';
 
@@ -92,11 +92,7 @@ const Checkout: React.FC<CheckoutProps> = ({ order_id }) => {
         console.log(item.product.book_id);
       }) 
       await console.log(Promise.all(createOrderItemPromises));
-      await checkoutOrder(token ? token : "", order_id ? order_id : "", address, phone);
-    }
-    
-    async function checkout() {
-      await checkoutOrder(token ? token : "", order_id ? order_id : "", address, phone);
+      await checkoutOrder(token ? token : "", order_id ? order_id : "not", address, phone);
     }
 
     function handleCheckout(e : React.FormEvent<HTMLFormElement>) {

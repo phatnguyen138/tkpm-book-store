@@ -7,6 +7,13 @@ export async function createOrder(token: string) {
     })
 }
 
+export async function deleteOrder(token: string) {
+    return makeRequest('/orders', {
+        method: 'delete',
+        headers: {'authorization': 'Bearer ' + token},
+    })
+}
+
 export async function createOrderItem(token: string, book_id: number, quantity: number) {
     return makeRequest('/orders/items', {
         method: 'post',

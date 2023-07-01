@@ -59,7 +59,7 @@ const ViewOrders: React.FC = () => {
                             <td className="py-2 px-4 text-center">
                                 <div className="space-x-2">
                                     <Link
-                                        to={`/edit-product/${order.order_id}`}
+                                        to={`/order-detail/${order.order_id}`}
                                         className="bg-blue-500 text-white py-1 px-2 rounded"
                                     >
                                         View

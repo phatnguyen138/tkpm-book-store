@@ -17,7 +17,7 @@ import { useAppSelector, useAppDispatch } from "../hooks/hook";
 import { CartItem } from "../types/Products";
 import { useNavigate } from 'react-router-dom';
 import { getCheckoutValue } from "../utils/product";
-import { createOrder, deleteOrderItems } from "../lib/axios/orders";
+import { createOrder, deleteOrderItems, deleteOrder } from "../lib/axios/orders";
 import { useDispatch } from 'react-redux';
 import { setOrderId } from "../redux/slices/orderId";
 
@@ -151,10 +151,20 @@ const Cart = () => {
         try {
             const response = await createOrder(token ? token : "");
             const orderId: string = response.data.order_id;
-            console.log(response);
-            console.log(orderId);
-            dispatch(setOrderId(orderId));
-            deleteOrderItems(token ? token : "", orderId);
+            if(response.success == true){
+                console.log(response);
+                console.log("orderId: ", orderId);
+                dispatch(setOrderId(orderId));
+                deleteOrderItems(token ? token : "", orderId);
+            }else{
+                console.log("delete order");
+                const response = await createOrder(token ? token : "");
+                const orderId: string = response.data.order_id;
+                console.log(response);
+                console.log("orderId: ", orderId);
+                dispatch(setOrderId(orderId));
+                deleteOrderItems(token ? token : "", orderId);
+            }
           } catch (error: any) {
             console.log(error.response);
           }
