@@ -191,7 +191,27 @@ const getOrderItems = async (req, res, next) => {
         return next(error);
     }
 };
-
+const getOrderItemsById = async (req, res) => {
+    const order_id = req.params.id;
+    let items = await orderModel.findOrderItemsByOrderId(order_id);
+    for (const item of items) {
+        item.book = await bookModel.findBookById(item.book_id);
+        delete item.book_id;
+    }
+    const order = await orderModel.findById(order_id);
+    if (!order) return next(new Error(400, 'Order not found'));
+    const { fullname, email, address, phone } = await userModel.findById(
+        order.user_id
+    );
+    order.user = { fullname, email, address, phone };
+    return res.status(200).json({
+        success: true,
+        data: {
+            order: items,
+            info: order,
+        }
+    });
+}
 const createOrderItems = async (req, res, next) => {
     try {
         const user_id = req.user_id;
