@@ -12,6 +12,7 @@ orderRoute
         orderController.checkoutOrder
     )
     .get('/items', verifyTokenAndAuthorization, orderController.getOrderItems)
+    .get('/:id/items', orderController.getOrderItemsById)
     .post(
         '/items',
         verifyTokenAndAuthorization,
